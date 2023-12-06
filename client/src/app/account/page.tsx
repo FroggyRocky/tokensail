@@ -1,11 +1,17 @@
-
+'use client';
+import Account from '@modules/Account/Account'
+import {Web3Provider} from "../../lib/HOCs/Web3Provider";
+import {WithAuth} from "../../lib/HOCs/WithAuth";
 
 type Props = {
 
 };
 
-export default function Account(props: Props) {
-    return <div>
-        <h2>Account</h2>
-    </div>
+async function Acc(props: Props) {
+    return <Web3Provider>
+        <Account />
+    </Web3Provider>
 };
+
+const AuthAcc = WithAuth(Acc)
+export default Acc

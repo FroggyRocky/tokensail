@@ -6,15 +6,22 @@ const graphql = require('./src/router/graphql.js');
 const cors = require('cors');
 const session = require('express-session')
 
-
-app.use(session({
-    secret: process.env.COOKIE_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+app.use(cors({
+    credentials: true,
+    origin:true,
 }))
 
-app.use(cors());
+// app.use(session({
+//     secret: process.env.COOKIE_KEY,
+//     name:'token_sail',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//         secure: true
+//     }
+// }))
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

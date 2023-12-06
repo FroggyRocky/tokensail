@@ -37,8 +37,8 @@ exports.createUser = (wallet_address, email = '', username='') => {
         return prisma.users.create({
             data: {
                 wallet_address: wallet_address,
-                email: null,
-                username: null,
+                email: email,
+                username: username,
                 isActive: false,
             }
         });
@@ -53,3 +53,5 @@ exports.createUser = (wallet_address, email = '', username='') => {
         });
     }
 }
+
+

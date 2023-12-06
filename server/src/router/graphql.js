@@ -2,13 +2,16 @@ const router = require('express').Router();
 const {graphqlHTTP} = require('express-graphql');
 const schema = require('../../schema.js');
 const authController = require('../controllers/auth');
+const userController = require('../controllers/user');
 const {errorNames, errorData} = require('../../errorTypes')
 
 function getErrorData(errorName) {
     return errorData[errorName]
 }
 const root = {
+    login: authController.login,
     auth: authController.auth,
+    getUserTopActions: userController.getUserRecentWalletActions,
 }
 
 router.use('/graphql', graphqlHTTP((req, res, params) => ({

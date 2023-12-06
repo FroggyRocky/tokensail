@@ -1,18 +1,15 @@
 import Image from 'next/image'
 import logo from '@assets/landing/logo.png'
 import {useConnectModal, useAccountModal, useChainModal, ConnectButton} from "@rainbow-me/rainbowkit";
+import {Logo} from '@UIKit/Logo/Logo'
 
-type Props = {
-
-};
-
-export function Header(props: Props) {
+export function Header() {
     const { openConnectModal } = useConnectModal();
     const { openAccountModal } = useAccountModal();
     const { openChainModal } = useChainModal();
     return <div className={'p-4'}>
         <main className={'flex justify-between items-center'}>
-        <Image src={logo} alt="logo" width={70} height={70} className={'rounded-full'}  />
+            <Logo />
             <ConnectButton.Custom>
                 {({
                       account,
@@ -53,7 +50,7 @@ export function Header(props: Props) {
 
                                 if (chain.unsupported) {
                                     return (
-                                        <p onClick={openChainModal} type="button" className={'text-lg font-semibold text-link hover:opacity-50 cursor-pointer tracking-wider'}>
+                                        <p onClick={openChainModal} className={'text-lg font-semibold text-link hover:opacity-50 cursor-pointer tracking-wider'}>
                                             Wrong network
                                         </p>
                                     );
@@ -90,9 +87,6 @@ export function Header(props: Props) {
 
                                         <button onClick={openAccountModal} type="button" className={'text-link'}>
                                             {account.displayName}
-                                            {account.displayBalance
-                                                ? ` (${account.displayBalance})`
-                                                : ''}
                                         </button>
                                     </div>
                                 );

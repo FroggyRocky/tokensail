@@ -7,15 +7,17 @@ const config: Config = {
         './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     ],
     theme: {
-        colors: {
-            transparent: 'transparent',
-            text: 'var(--font-color-primary)',
-            text2: 'var(--font-color-secondary)',
-            link:'var(--color-link)',
-            button:'var(--color-button)',
-            primary: 'var(--color-primary)',
-            secondary: 'var(--color-secondary)',
+        extend: {
+            colors: {
+                transparent: 'transparent',
+                text: 'var(--font-color-primary)',
+                text2: 'var(--font-color-secondary)',
+                link:'var(--color-link)',
+                button:'var(--color-button)',
+                primary: 'var(--color-primary)',
+                secondary: 'var(--color-secondary)',
 
+            }
         }
     },
     plugins: [],

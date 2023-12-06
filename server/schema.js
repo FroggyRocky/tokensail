@@ -2,6 +2,7 @@ const {buildSchema} = require('graphql');
 
 
 const schema = buildSchema(`
+scalar JSON
     type NftFolder {
     id: ID,
     name: String,
@@ -16,11 +17,28 @@ const schema = buildSchema(`
         isActive: Boolean,
         nft_folders: [NftFolder],
    } 
-   input authInput {
+   input loginInput {
          wallet_address: String,
    }
+   input createNftFolderInput {
+            name: String!,
+            user_id: ID!,
+            tokens:[String],
+   }
+   input addTokenToFolderInput {
+               folder_id: ID!,
+               user_id: ID!,
+               token_id: String!,
+   }
     type Query {
-        auth(authInput:authInput): User,
+        login(loginInput:loginInput): User,
+         auth: User,
+         getUserFolders: [NftFolder],
+         getUserTopActions:JSON,
+    }
+    type Mutation {
+    createNftFolder(createNftFolderInput:createNftFolderInput): NftFolder,
+    addTokenToFolder(addTokenToFolderInput:addTokenToFolderInput): NftFolder,
     }
 `)
 

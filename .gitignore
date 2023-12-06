@@ -1,0 +1,27 @@
+# Node.js
+**/node_modules/**
+
+# npm
+npm-debug.log
+*.log
+*.lock
+
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build files
+/build
+/dist
+
+# Environment variables
+.env
+.env.local
+**/.env/**
+# IDE files
+.vscode/
+.idea/
+
+# Jest coverage
+coverage/

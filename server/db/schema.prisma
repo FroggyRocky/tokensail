@@ -7,20 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id             Int          @id @default(autoincrement())
-  wallet_address String       @unique
-  username       String
-  email          String
-  isActive       Boolean      @default(false)
-  nft_folders    NftFolders[]
-  createdAt      DateTime     @default(now())
+model users {
+  id             Int           @id @default(autoincrement())
+  wallet_address String        @unique
+  username       String        @default("")
+  email          String        @default("")
+  isActive       Boolean       @default(false)
+  nft_folders    nft_folders[]
+  createdAt      DateTime      @default(now())
 }
 
-model NftFolders {
+model nft_folders {
   id      Int      @id @default(autoincrement())
   name    String
   tokens  String[] @default([])
-  user    Users    @relation(fields: [user_id], references: [id])
+  user    users    @relation(fields: [user_id], references: [id])
   user_id Int
 }

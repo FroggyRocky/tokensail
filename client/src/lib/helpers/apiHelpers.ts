@@ -7,8 +7,15 @@ type graphQLResponseType = {
 }
 
 export function unparseGraphQLResponse(res: AxiosResponse<graphQLResponseType>) {
-    return {
-        error:res.data.errors[0],
-        data:res.data.data
+    if(res.data.errors) {
+        return {
+            error:res.data.errors[0],
+            data:null
+        }
+    } else {
+        return {
+            error: null,
+            data: res.data.data
+        }
     }
 }

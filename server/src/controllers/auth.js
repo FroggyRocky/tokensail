@@ -5,14 +5,15 @@ const {GraphQLError} = require('graphql');
 const {errorNames} = require('../../errorTypes')
 
 exports.authMiddleware = async (req, context) => {
-    if (req.session.user) {
-        const user = await userModel.getUserById(req.session.user.id);
-        if (!user) {
-            req.user = undefined;
-        } else {
-            req.user = user;
-        }
-    } else if (req.headers.authorization) {
+    // if (req.session.user) {
+    //     const user = await userModel.getUserById(req.session.user);
+    //     if (!user) {
+    //         req.user = undefined;
+    //     } else {
+    //         req.user = user;
+    //     }
+    // } else
+        if (req.headers.authorization) {
         const user = await userModel.getUserByWalletAddress(req.headers.authorization);
         if (!user) {
             req.user = undefined;
@@ -22,11 +23,10 @@ exports.authMiddleware = async (req, context) => {
     }
     return req
 }
-
-exports.auth = async (req, context, res) => {
+exports.login = async (req, context) => {
     const ctx = await context
-    const {authInput} = req;
-    const {wallet_address} = authInput;
+    const {loginInput} = req;
+    const {wallet_address} = loginInput;
     if (ctx.user) {
         return ctx.user;
     }
@@ -37,10 +37,8 @@ exports.auth = async (req, context, res) => {
     try {
         if (!user) {
             const newUser = await userModel.createUser(wallet_address);
-            ctx.session.id = newUser.id;
             return newUser;
         } else {
-            ctx.session.user = user.id;
             return user;
         }
     } catch (e) {
@@ -48,7 +46,14 @@ exports.auth = async (req, context, res) => {
         throw new GraphQLError(errorNames.INVALID_DATA);
     }
 }
-
+exports.auth = async (req, context) => {
+    const ctx = await context
+    if (ctx.user) {
+        return ctx.user;
+    } else {
+        throw new GraphQLError(errorNames.UNATHORIZED);
+    }
+}
 exports.logout = async (req, context) => {
     req.session.destroy();
     return true;
