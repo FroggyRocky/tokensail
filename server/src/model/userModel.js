@@ -54,4 +54,14 @@ exports.createUser = (wallet_address, email = '', username='') => {
     }
 }
 
+exports.changeUserData = (id, payload) => {
+    const {wallet_address, ...data} = payload
+    return prisma.users.update({
+        where: {
+            id: id
+        },
+        data: data
+    });
+}
+
 

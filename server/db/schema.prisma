@@ -10,17 +10,17 @@ datasource db {
 model users {
   id             Int           @id @default(autoincrement())
   wallet_address String        @unique
-  username       String        @default("")
-  email          String        @default("")
+  username       String?
+  email          String?
   isActive       Boolean       @default(false)
   nft_folders    nft_folders[]
   createdAt      DateTime      @default(now())
 }
 
 model nft_folders {
-  id      Int      @id @default(autoincrement())
+  id      Int    @id @default(autoincrement())
   name    String
-  tokens  String[] @default([])
-  user    users    @relation(fields: [user_id], references: [id])
+  tokens  Json?
+  user    users  @relation(fields: [user_id], references: [id])
   user_id Int
 }
