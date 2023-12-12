@@ -1,5 +1,6 @@
 const userController = require('../../controllers/userController');
 const authController = require('../../controllers/authController');
+const nftController = require('../../controllers/nftController');
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -9,7 +10,7 @@ const {
     GraphQLNonNull,
     GraphQLEnumType,
     GraphQLInt,
-    GraphQLBoolean
+    GraphQLBoolean, Token
 } = require('graphql');
 const {RecentWalletActionType} = require('../bitquery/bitqueryTypes')
 const {NftFolderType, UserType} = require('../types/types')
@@ -69,7 +70,7 @@ const RootQuery = new GraphQLObjectType({
                 contractAddresses: {type: GraphQLList(GraphQLString)},
             },
             resolve(parent, args, context) {
-                return userController.getUserNfts(parent, args, context);
+                return nftController.getUserNfts(parent, args, context);
             },
         },
         getNftData: {
@@ -79,7 +80,7 @@ const RootQuery = new GraphQLObjectType({
                 contract_address: {type: GraphQLNonNull(GraphQLString)},
             },
             resolve(parent, args, context) {
-                return userController.getNftData(parent, args, context);
+                return nftController.getNftData(parent, args, context);
             },
         },
         getUserNftFolders: {
@@ -88,7 +89,7 @@ const RootQuery = new GraphQLObjectType({
                 user_id: {type: GraphQLID},
             },
             resolve(parent, args, context) {
-                return userController.getUserNftFolders(parent, args, context);
+                return nftController.getUserNftFolders(parent, args, context);
             },
         },
     },

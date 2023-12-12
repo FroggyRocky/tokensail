@@ -7,14 +7,27 @@ const ethers = require('ethers');
 
 const {verify, decode, sign} = require('jsonwebtoken')
 exports.authMiddleware = async (req, context) => {
+    if(req.headers.origin === `http://localhost:${process.env.PORT}`) {
+            req.isAuth = true;
+            req.user = undefined;
+            return req
+    }
     if (req.headers.authorization) {
         const [, token] = req.headers.authorization.split(' ');
-        const {wallet_address} = validateVerifyToken(token)
+        let wallet_address;
+        try {
+            wallet_address = validateVerifyToken(token)['wallet_address']
+        } catch (e) {
+            req.user = undefined;
+            req.isAuth = false;
+            return req
+        }
         const user = await userModel.getUserByWalletAddress(wallet_address);
         if (!user) {
             req.user = undefined;
         } else {
             req.user = user;
+            req.isAuth = true;
         }
     }
     return req

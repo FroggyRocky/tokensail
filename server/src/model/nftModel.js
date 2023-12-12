@@ -1,7 +1,7 @@
 const {prisma} = require('../../db/prisma');
 const alchemy = require('../router/alchemy/alchemy');
 
-exports.createNftFolder = (name, user_id, tokens) => {
+exports.createNftFolder = async (name, user_id, tokens) => {
     return prisma.nft_folders.create({
         data: {
             name: name,
@@ -11,7 +11,7 @@ exports.createNftFolder = (name, user_id, tokens) => {
     });
 }
 
-exports.addTokenToFolder = (folder_id, token_id, contract_address) => {
+exports.addTokenToFolder = async (folder_id, token_id, contract_address) => {
     return prisma.nft_folders.update({
         where: {
             id: folder_id
@@ -27,12 +27,20 @@ exports.addTokenToFolder = (folder_id, token_id, contract_address) => {
     });
 }
 
-exports.getAllUserFolders = (user_id) => {
-return  prisma.nft_folders.findMany({
+exports.getAllUserFolders = async (user_id) => {
+const folders = await prisma.nft_folders.findMany({
     where: {
-        user_id: user_id
+        user_id: +user_id
     }
 });
+const modified_folders = folders.map(folder => {
+  const {tokens, ...rest} = folder;
+    const modified_tokens = Promise.all(tokens.map(async (token) => {
+        const {contract_address, token_id} = token;
+        const data = await alchemy.nft.getNftMetadata(contract_address, token_id);
+
+    }))
+})
 }
 
 exports.getFolderById = (folder_id) => {
