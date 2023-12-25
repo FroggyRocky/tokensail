@@ -1,0 +1,69 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[12].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[12].oneOf[9].use[5]!./src/UIKit/Loader/loader.module.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.loader_loader__w_C57 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #222229;
+}
+
+.loader_loader__planet__3O0QN {
+  display: block;
+  width: 125px;
+  height: 125px;
+  position: relative;
+  transform-style: preserve-3d;
+  border-radius: 50%;
+  background: #fcc96b;
+  background: rgb(252, 201, 107);
+  background: linear-gradient(180deg, rgb(252, 201, 107) 0%, rgb(252, 201, 107) 15%, rgb(247, 174, 1) 15%, rgb(247, 174, 1) 19%, rgb(252, 201, 107) 19%, rgb(252, 201, 107) 22%, rgb(247, 174, 1) 22%, rgb(247, 174, 1) 28%, rgb(252, 201, 107) 28%, rgb(252, 201, 107) 31%, rgb(252, 201, 107) 33%, rgb(252, 201, 107) 36%, rgb(247, 174, 1) 36%, rgb(247, 174, 1) 48%, rgb(252, 201, 107) 48%, rgb(252, 201, 107) 55%, rgb(247, 174, 1) 55%, rgb(247, 174, 1) 66%, rgb(252, 201, 107) 66%, rgb(252, 201, 107) 70%, rgb(247, 174, 1) 70%, rgb(247, 174, 1) 73%, rgb(252, 201, 107) 73%, rgb(252, 201, 107) 82%, rgb(247, 174, 1) 82%, rgb(247, 174, 1) 86%, rgb(252, 201, 107) 86%);
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.25), inset 8px -4px 6px rgba(199, 128, 0, 0.5), inset -8px 4px 8px rgba(255, 235, 199, 0.5), inset 20px -5px 12px #f7ae01, 0 0 100px rgba(255, 255, 255, 0.35);
+  transform: rotateZ(-15deg);
+}
+
+.loader_loader__planet__3O0QN::before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 16px solid #7b6f42;
+  border-top-width: 0;
+  border-radius: 50%;
+  box-shadow: 0 -2px 0 #b1a693;
+  animation: loader_rings1__UHiba 0.8s infinite linear;
+}
+
+.loader_loader__planet__3O0QN::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 8px solid #b1a693;
+  border-top-width: 0;
+  border-radius: 50%;
+  box-shadow: 0 -2px 0 #7b6f42;
+  animation: loader_rings2__AcHt0 0.8s infinite linear;
+}
+
+@keyframes loader_rings1__UHiba {
+  0% {
+    transform: rotateX(65deg) rotateZ(0deg) scale(1.75);
+  }
+  100% {
+    transform: rotateX(65deg) rotateZ(360deg) scale(1.75);
+  }
+}
+@keyframes loader_rings2__AcHt0 {
+  0% {
+    transform: rotateX(65deg) rotateZ(0deg) scale(1.7);
+  }
+  100% {
+    transform: rotateX(65deg) rotateZ(360deg) scale(1.7);
+  }
+}
