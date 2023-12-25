@@ -13,5 +13,15 @@
       background-color: var(--color-button);
       color: var(--color-white);
     }
-
+  &_disabled {
+    background-color: rgba(128, 128, 128, 0.47);
+    opacity: 0.8;
+    color: var(--color-white);
+    cursor: not-allowed;
+    border: 1px solid grey;
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.47);
+      color: var(--color-white);
+    }
+  }
 }

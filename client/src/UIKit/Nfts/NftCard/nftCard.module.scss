@@ -1,0 +1,100 @@
+.nftCard {
+  width: 250px;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  border: 0.5px solid transparent;
+  position: relative;
+  border-radius: 10px;
+  overflow-y: hidden;
+  min-height: 252px;
+  z-index: 2;
+  &_selected {
+    border: 1px solid var(--color-teal);
+    transform: rotateY(-10deg) translateZ(20px);
+    &::after {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background: rgba(52, 152, 219, 0.42);
+      z-index:5;
+    }
+  }
+  &__checkmark {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 50%;
+    background: var(--color-teal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-link);
+    font-size: 20px;
+    font-weight: 700;
+    z-index: 20;
+  }
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    transition: all 0.4s ease-in-out;
+    position: relative;
+  }
+  &:hover {
+    border: 1px solid ghostwhite;
+    transform: rotateY(-10deg) translateZ(20px);
+  }
+  &:hover &__collectionName  {
+    transform: translateY(0%);
+    color: var(--color-link);
+  }
+
+  &:active {
+    border: 0.5px solid var(--color-teal);
+  }
+
+  &__collectionName {
+    font-size: 15px;
+    font-family: var(--font-primary);
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: transparent;
+    transform: translateY(120%);
+    -webkit-text-stroke: 1px var(--color-link);
+    -webkit-text-stroke-width: 1px;
+    text-shadow: 2px 2px 10px var(--color-link);
+    transition: all 0.1s ease-in-out;
+    text-align: center;
+    letter-spacing: 0.2em;
+    animation: flicker 1.5s ease-in-out infinite alternate;
+    z-index: 10;
+  }
+}
+
+
+@keyframes flicker {
+  0% {
+    opacity: 0.5;
+    text-shadow: 2px 2px 10px var(--color-teal);
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 2px 2px 20px var(--color-teal);
+  }
+}
+
+@media (max-width: 768px) {
+  .nftCard {
+    min-height: 250px;
+    &:hover {
+      transform: none;
+      }
+    &:hover &__collectionName {
+      transform: translateY(0%);
+    }
+  }
+}

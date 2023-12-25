@@ -1,23 +1,35 @@
 const prisma = require('../../db/prisma');
 const bcrypt = require('bcrypt');
 const userModel = require('../model/userModel');
+const nftModel = require('../model/nftModel');
+const walletModel = require('../model/walletModel');
 const {GraphQLError} = require('graphql');
 const {errorNames} = require('../../errorTypes')
 const ethers = require('ethers');
+const jwt = require('jsonwebtoken');
 
-const {verify, decode, sign} = require('jsonwebtoken')
-exports.authMiddleware = async (req, context) => {
+exports.authMiddleware = async (req, context, p) => {
+    //FOR DEV ONLY
     if(req.headers.origin === `http://localhost:${process.env.PORT}`) {
+        const user = await userModel.getUserByWalletAddress('0xCdAA125746a670996c4D6d76D9BE35dd53E13ba9');
             req.isAuth = true;
-            req.user = undefined;
+            req.user = user;
             return req
     }
+    //FOR DEV ONLY
+
     if (req.headers.authorization) {
         const [, token] = req.headers.authorization.split(' ');
-        let wallet_address;
+        let wallet_address = undefined;
         try {
-            wallet_address = validateVerifyToken(token)['wallet_address']
+            wallet_address = validateVerifyToken(token)['data']['wallet_address']
         } catch (e) {
+            console.log('authMiddleware error', e)
+            req.user = undefined;
+            req.isAuth = false;
+            return req
+        }
+        if(!wallet_address) {
             req.user = undefined;
             req.isAuth = false;
             return req
@@ -51,22 +63,28 @@ exports.login = async (parent, args, context) => {
         if (!user) {
             const newUser = await userModel.createUser(wallet_address);
             const jwt_token = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 1 day
-                data: user.wallet_address
+                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7), // one week
+                data: {
+                    wallet_address: wallet_address,
+                    id: newUser.id
+                }
             }, process.env.JWT_SECRET);
             return {
-                user: newUser,
                 token: jwt_token,
             };
         } else {
             const jwt_token = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 1 day
-                data: user.wallet_address
+                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7), // 1 day
+                data: {
+                    wallet_address: user.wallet_address,
+                    id: user.id
+                }
             }, process.env.JWT_SECRET);
             return {
-                user: user,
-                token: jwt_token,
-
+                token: {
+                    token: jwt_token,
+                    expiresOn: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000)).toISOString() //
+                },
             };
         }
     } catch (e) {
@@ -75,19 +93,27 @@ exports.login = async (parent, args, context) => {
     }
 }
 
-exports.auth = async (req, context) => {
-    const ctx = await context
-    if (ctx.user) {
-        return ctx.user;
+exports.auth = async (parent, args, context) => {
+    const {user} = await context
+    if (user) {
+        const args = {
+            user: user,
+            limit: 6,
+            offset: 0,
+        }
+        const nft_folders = await nftModel.getAllUserFolders(user.id);
+        const wallet_activity = await walletModel.getWalletHistory(args);
+
+        return {
+            user: user,
+            nft_folders: nft_folders,
+            wallet_activity: wallet_activity
+        }
     } else {
         return new GraphQLError(errorNames.UNATHORIZED);
     }
 }
 
-exports.logout = async (req, context) => {
-    req.session.destroy();
-    return true;
-}
 
 async function verifySignature(walletAddress, signature, _sigMessage) {
     let verifiedAuthorization = ethers.verifyMessage(_sigMessage, signature)
@@ -102,11 +128,11 @@ async function verifySignature(walletAddress, signature, _sigMessage) {
 
 function validateVerifyToken(token) {
     try {
-        const isValid = verify(token, process.env.JWT_SECRET)
+        const isValid = jwt.verify(token, process.env.JWT_SECRET)
         if (!isValid) {
             return new GraphQLError(errorNames.UNATHORIZED)
         }
-        return decode(token)
+        return jwt.decode(token)
     } catch (e) {
         return new GraphQLError(errorNames.UNATHORIZED)
     }

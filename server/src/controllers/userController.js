@@ -25,34 +25,7 @@ exports.changeUserData = async (parent, args, context) => {
     return userModel.changeUserData(user.id, args);
 }
 
-exports.getUserWalletActivity = async (parent, args, context) => {
-    try {
-        const {limit, offset} = args;
-        // const {user} = await context
-        // if(!user){
-        //     return new GraphQLError(errorNames.UNATHORIZED);
-        // }
-        const res = await axios.post('https://graphql.bitquery.io', {
-            query: addressActions,
-            variables: {
-                "limit":limit || 6,
-                "offset":offset || 0,
-                "network": "ethereum",
-                address: '0xCdAA125746a670996c4D6d76D9BE35dd53E13ba9',
-                // "address": user?.wallet_address || '0xCdAA125746a670996c4D6d76D9BE35dd53E13ba9',
-                "dateFormat": "%Y-%m-%d"
-            }
-        }, {
-            headers: {
-                "X-API-KEY": process.env.BITQUERY_API_KEY
-            }
-        })
-        console.log(JSON.stringify(res.data))
-        return res.data.data
-    } catch (e) {
-        console.log(e)
-    }
-}
+
 
 
 

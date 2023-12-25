@@ -1,12 +1,12 @@
 import {AxiosError, AxiosResponse} from "axios";
 
 
-type graphQLResponseType = {
-    errors: Array<{message: string, statusCode: number}>
-    data: any
+export type graphQLResponseType<T> = {
+    errors?: Array<{message: string, statusCode: number}>
+    data?: T
 }
 
-export function unparseGraphQLResponse(res: AxiosResponse<graphQLResponseType>) {
+export function unparseGraphQLResponse(res: AxiosResponse<graphQLResponseType<any>>) {
     if(res.data.errors) {
         return {
             error:res.data.errors[0],

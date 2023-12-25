@@ -51,15 +51,13 @@ exports.getFolderById = (folder_id) => {
     });
 }
 
-exports.getAllUserNft = async (wallet_address, contractAddresses = [], pageKey = '', pageSize = 1) => {
+exports.getAllUserNfts = async (wallet_address, contractAddresses = [], pageKey = '', pageSize = 1) => {
     return await alchemy.nft.getNftsForOwner(wallet_address, {pageSize, pageKey, contractAddresses});
 }
 exports.getNftData = async (token_id, contract_address) => {
     return await alchemy.nft.getNftMetadata(contract_address, token_id);
 }
 
-exports.getAllUserNfts = async (user_wallet, options = {}) => {
-    return alchemy.nft.getNftsForOwner(user_wallet, options)
-}
+
 
 

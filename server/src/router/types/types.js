@@ -1,4 +1,5 @@
 const userController = require("../../controllers/userController");
+const nftController = require("../../controllers/nftController");
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -11,6 +12,7 @@ const {
     GraphQLBoolean
 } = require('graphql');
 const {TokenType} = require('../alchemy/alchemyTypes')
+const {WalletInflowsOutflowsType, UserWalletActivityType} = require('../bitquery/bitqueryTypes')
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
@@ -19,22 +21,30 @@ const UserType = new GraphQLObjectType({
         email: {type: GraphQLString},
         username: {type: GraphQLString},
         isActive: {type: GraphQLBoolean},
-        nft_folders: {
-            type: GraphQLList(NftFolderType),
-            resolve(parent, args, context) {
-                return userController.getUserNftFolders(parent, args, context);
-            }
-        },
+        // nft_folders: {
+        //     type: GraphQLList(NftFolderType),
+        //     resolve(parent, args, context) {
+        //         return nftController.getUserNftFolders(parent, args, context);
+        //     }
+        // },
+        // wallet_activity: {type:WalletInflowsOutflowsType}
     }),
 });
 
+const JWTType = new GraphQLObjectType({
+    name: 'JWT',
+    fields: () => ({
+        token: {type: GraphQLString},
+        expiresOn: {type: GraphQLString},
+    })
+})
 
 const NftFolderType = new GraphQLObjectType({
     name: 'NftFolder',
     fields: () => ({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
-        tokens: {type: GraphQLList(new GraphQLObjectType({
+        tokens: {type: new GraphQLList(new GraphQLObjectType({
                     name: 'folderTokens',
                     fields: () => ({
                         token_id: {type: GraphQLString},
@@ -53,7 +63,9 @@ const NftFolderType = new GraphQLObjectType({
 })
 
 
+
 module.exports = {
     UserType,
-    NftFolderType
+    NftFolderType,
+    JWTType
 }

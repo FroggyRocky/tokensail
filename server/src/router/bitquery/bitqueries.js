@@ -1,4 +1,4 @@
-exports.addressActions = `query ($network: EthereumNetwork!, $address: String!, $limit: Int!, $offset: Int!, $from: ISO8601DateTime, $till: ISO8601DateTime) {
+exports.addressWalletInflowsOutflows = `query ($network: EthereumNetwork!, $address: String!, $limit: Int!, $offset: Int!, $from: ISO8601DateTime, $till: ISO8601DateTime) {
   ethereum(network: $network) {
     inflow: transfers(
       options: {limit: $limit, offset: $offset, desc: "date.date"}

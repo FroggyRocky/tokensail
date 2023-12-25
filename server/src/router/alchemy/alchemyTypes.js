@@ -65,6 +65,7 @@ const RawType = new GraphQLObjectType({
                 fields: () => ({
                     name: { type: GraphQLString },
                     description: { type: GraphQLString },
+                    image: { type: GraphQLString },
                     animationUrl: { type: GraphQLString },
                     attributes: { type: new GraphQLList(GraphQLString) },
                 }),
@@ -105,7 +106,7 @@ const TokenType = new GraphQLObjectType({
         raw: { type: RawType },
         collection: { type: CollectionType },
         mint: { type: MintType },
-        owners: { type: GraphQLList(GraphQLString) },
+        owners: { type: new GraphQLList(GraphQLString) },
         timeLastUpdated: { type: GraphQLString },
         balance: { type: GraphQLString },
         acquiredAt: { type: AcquiredAtType },

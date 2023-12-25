@@ -1,25 +1,27 @@
 'use client';
 import {useEffect, useState} from "react";
-import {useUserStore} from "@store/userStore/userStore";
 import {useRouter} from "next/navigation";
 import {useAccount} from "wagmi";
-import {authThunk} from "@store/userStore/userThunks";
-
-
+import {loginThunk} from "@store/authStore/authThunks";
+import {useAuthStore} from "@store/authStore/authStore";
+import {useSignMessage} from "wagmi";
+import {Loader} from "@UIKit/Loader/Loader";
 
 export const WithAuth = (Component:React.ComponentType<any>) => {
     function EnhancedComponent(props: any) {
         const [loading, setLoading] = useState(true)
-        const {userData:user, setWalletAddress} = useUserStore(state => state)
+        const {auth_token} = useAuthStore(state => state)
         const {isConnected, address} = useAccount();
+        const {signMessageAsync} = useSignMessage()
         const {push} = useRouter()
         async function auth() {
             try {
-                if(!user && !isConnected || !address) {
+                if(!auth_token.token && !isConnected || !address) {
                     await push('/')
-                } else if(!user && isConnected && address) {
-                    setWalletAddress(address)
-                    await authThunk()
+                } else if(!auth_token.token && isConnected && address) {
+                    const sig_msg = 'Welcome to TokenSail!'
+                    const res = await signMessageAsync({message: sig_msg})
+                    await loginThunk(res, sig_msg, address)
                 }
             } finally {
                 setLoading(false)
@@ -28,7 +30,7 @@ export const WithAuth = (Component:React.ComponentType<any>) => {
         useEffect(  () => {
              auth().then(() => {})
         }, [])
-        if(loading) return <div>Loading...</div>
+        if(loading) return <Loader />
         return <> <Component {...props} /></>
     }
     return EnhancedComponent

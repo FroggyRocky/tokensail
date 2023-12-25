@@ -1,4 +1,4 @@
-const {GraphQLObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString} = require("graphql");
+const {GraphQLObjectType, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString} = require("graphql");
 
 
 
@@ -27,8 +27,8 @@ const DateType = new GraphQLObjectType({
 
 
 
-const UserActivityType = new GraphQLObjectType({
-    name: "Action",
+const UserWalletActivityType = new GraphQLObjectType({
+    name: "UserWalletActivityType",
     fields: () => ({
         address: { type: AddressType },
         currency: { type: CurrencyType },
@@ -37,24 +37,26 @@ const UserActivityType = new GraphQLObjectType({
     }),
 });
 
-const UserNftType = new GraphQLObjectType({
-    name: "UserNft",
+const UserWalletHistoryType = new GraphQLObjectType({
+    name: "UserWalletHistoryType",
     fields: () => ({
-        token_id: { type: GraphQLString },
-        token_uri: { type: GraphQLString },
-        folder_id: { type: GraphQLString },
+        address: { type: AddressType },
+        currency: { type: CurrencyType },
+        amount: { type: GraphQLFloat },
+        date: { type: DateType },
+        type: { type: GraphQLString },
     }),
 });
 
-exports.RecentWalletActionType = new GraphQLObjectType({
-    name: 'RecentWalletAction',
+const WalletInflowsOutflowsType = new GraphQLObjectType({
+    name: 'WalletInflowsOutflowsType',
     fields: () => ({
         ethereum: {
             type: new GraphQLObjectType({
                 name: 'Ethereum',
                 fields: () => ({
-                    inflow: { type: GraphQLList(UserActivityType) },
-                    outflow: { type: GraphQLList(UserActivityType) },
+                    inflow: { type: new GraphQLList(UserWalletActivityType) },
+                    outflow: { type: new GraphQLList(UserWalletActivityType) },
                 })
             })
         },
@@ -62,12 +64,20 @@ exports.RecentWalletActionType = new GraphQLObjectType({
 })
 
 
-exports.UserNftType = new GraphQLObjectType({
-    name: 'UserNftFolder',
-    fields: () => ({
-        name: { type: GraphQLString },
-        description: { type: GraphQLString },
-        image: { type: GraphQLString },
-        attributes: { type: GraphQLList(UserNftType) },
-    })
-})
+
+// const UserNftType = new GraphQLObjectType({
+//     name: 'UserNftFolder',
+//     fields: () => ({
+//         name: { type: GraphQLString },
+//         description: { type: GraphQLString },
+//         image: { type: GraphQLString },
+//         attributes: { type: GraphQLList(UserNftType) },
+//     })
+// })
+
+
+module.exports = {
+    WalletInflowsOutflowsType,
+    UserWalletActivityType,
+    UserWalletHistoryType
+}

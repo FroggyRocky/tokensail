@@ -12,11 +12,11 @@ type Props = {
 
 export function AccountLayout(props: Props) {
     return <Web3Provider>
-        <div className={'bg-secondary bg-cover bg-center h-screen'} style={{backgroundImage: `url(${bg.src})`}}>
-            <div className={'absolute top-0 left-0 w-full h-screen z-5 opacity-70 bg-black'}></div>
-            <main className={'relative z-10 h-full flex flex-col'}>
+        <div className={'relative bg-secondary bg-cover bg-center min-h-screen flex flex-col flex-grow'} style={{backgroundImage: `url(${bg.src})`}}>
+            <div className={'absolute top-0 left-0 w-full z-5 opacity-70 bg-black h-full'}></div>
+            <main className={'relative z-10 min-h-screen flex flex-col'}>
                 <AccountHeader />
-                <div className={'flex-grow px-5 mt-5'}>
+                <div className={'flex-grow px-5 h-full flex flex-col items-center justify-center'}>
                     {props.children}
                     </div>
                 <Footer/>

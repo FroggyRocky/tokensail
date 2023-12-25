@@ -1,0 +1,45 @@
+.addNftBox {
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, #ffffff, #c0c0c0) 1;
+  border-image-slice: 1;
+  border-radius: inherit;
+  cursor: pointer;
+  background-color: rgba(73, 99, 107, 0.19);
+  filter: brightness(1);
+  &:hover {
+    filter: brightness(1.5);
+  }
+  &:hover &__addIcon {
+    display: block;
+    opacity: 0.7;
+  }
+  &:hover &__icon {
+    opacity: 0;
+  }
+  &__content {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  &__addIcon {
+    width: 50%;
+    height: 50%;
+    opacity: 0.2;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+}
+
+
+@keyframes glitter {
+  0%, 100% {
+    filter: brightness(1);
+    border-image-source: linear-gradient(45deg, #ffffff, #c0c0c0);
+  }
+  50% {
+    filter: brightness(1.5);
+    border-image-source: linear-gradient(45deg, #c0c0c0, #ffffff);
+  }
+}

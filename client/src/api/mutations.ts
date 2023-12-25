@@ -1,4 +1,12 @@
+import {gql} from "@apollo/client";
 
-const mutations = {
 
-}
+
+export const CREATE_NFT_FOLDER = gql`
+    mutation CreateNFTFolder($data: Upload) {
+        createNftFolder(data: $data) {
+            id
+            name
+        }
+    }
+`

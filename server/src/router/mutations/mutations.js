@@ -6,24 +6,24 @@ const {
     GraphQLList,
     GraphQLNonNull,
     GraphQLEnumType,
+    GraphQLScalarType,
 } = require('graphql');
 const {UserType, NftFolderType} = require('../types/types')
 const nftController = require("../../controllers/nftController");
-
+const {GraphQLUpload, } = require('graphql-upload')
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
         createNftFolder: {
             type: NftFolderType,
             args: {
-                name: {type: GraphQLString},
-                user_id: {type: GraphQLID},
+                data: {type: GraphQLUpload},
             },
-            resolve(parent, args, context) {
-                return nftController.createNftFolder(parent, args, context);
+            resolve(_, { data }, context) {
+                return nftController.createNftFolder(_, { data }, context);
             }
         },
-        addTokenToFolder: {
+        addNftToFolder: {
             type: NftFolderType,
             args: {
                 token_id: {type: GraphQLString},

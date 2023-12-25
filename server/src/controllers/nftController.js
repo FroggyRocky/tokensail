@@ -7,6 +7,8 @@ const alchemy = require("../router/alchemy/alchemy");
 
 exports.createNftFolder = async (parent, args, context) => {
     const {user} = await context
+    const a = await args
+    console.log(a)
     const {name, user_id, tokens} = args;
     if (!user) {
         return new GraphQLError(errorNames.UNATHORIZED);
@@ -45,8 +47,12 @@ exports.getUserNfts = async (parent, args, context) => {
             return new GraphQLError(errorNames.UNATHORIZED);
         }
         const wallet_address = user.wallet_address
-        // const wallet_address = '0x5bc1076b506b6ff9ff170f722618f9fdbf02de67'
-        return await nftModel.getAllUserNfts(wallet_address, contractAddresses, pageKey, pageSize);
+console.log(args)
+        const data = await nftModel.getAllUserNfts(wallet_address, contractAddresses, pageKey, pageSize);
+        // for(let i = 0; i < data.ownedNfts.length; i++) {
+        //     console.log(data.ownedNfts[i].contract.openSeaMetadata)
+        // }
+        return data
     } catch (e) {
         console.log(e)
     }

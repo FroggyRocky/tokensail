@@ -16,7 +16,7 @@ export function OutlinedBtn(props: Props) {
         return;
     }
 
-    return <button className={styles.outlinedBtn} type={props.type ?? 'button'}
+    return <button className={`${styles.outlinedBtn} ${props.isDisabled && styles.outlinedBtn_disabled}`} type={props.type ?? 'button'}
                    disabled={props.isDisabled ?? false} onClick={handleClick}>
         <span>{props.text}</span>
     </button>

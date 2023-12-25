@@ -1,6 +1,7 @@
 const userController = require('../../controllers/userController');
 const authController = require('../../controllers/authController');
-const nftController = require('../../controllers/nftController');
+const nftController = require('../../controllers/nftController')
+const walletController = require('../../controllers/walletController')
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -12,22 +13,19 @@ const {
     GraphQLInt,
     GraphQLBoolean, Token
 } = require('graphql');
-const {RecentWalletActionType} = require('../bitquery/bitqueryTypes')
-const {NftFolderType, UserType} = require('../types/types')
+const {WalletInflowsOutflowsType, UserWalletHistoryType} = require('../bitquery/bitqueryTypes')
+const {NftFolderType, UserType, JWTType} = require('../types/types')
 const {TokenType} = require('../alchemy/alchemyTypes')
-
-
 
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         login: {
-            type:  new GraphQLObjectType({
+            type: new GraphQLObjectType({
                 name: 'Login',
                 fields: () => ({
-                    user: {type: UserType},
-                    token: {type: GraphQLString},
+                    token: {type: JWTType},
                 })
             }),
             args: {
@@ -40,26 +38,39 @@ const RootQuery = new GraphQLObjectType({
             },
         },
         auth: {
-            type: UserType,
+            type: new GraphQLObjectType({
+                name: 'Auth',
+                fields: () => ({
+                    user: {type: UserType},
+                    nft_folders: {type: new GraphQLList(NftFolderType)},
+                    wallet_activity: {type: new GraphQLList(UserWalletHistoryType)},
+                })
+            }),
             resolve(parent, args, context) {
                 return authController.auth(parent, args, context);
             },
         },
         getUserWalletActivity: {
-            type: RecentWalletActionType,
+            type: WalletInflowsOutflowsType,
             args: {
                 limit: {type: GraphQLInt},
                 offset: {type: GraphQLInt},
             },
             resolve(parent, args, context) {
-                return userController.getUserWalletActivity(parent, args, context);
+                return {
+                    ethereum: {
+                        inflow: [],
+                        outflow: []
+                    }
+                }
+                // return walletController.getUserWalletActivity(parent, args, context);
             },
         },
         getUserNfts: {
             type: new GraphQLObjectType({
                 name: 'UserNfts',
                 fields: () => ({
-                    ownedNfts: {type: GraphQLList(TokenType)},
+                    ownedNfts: {type: new GraphQLList(TokenType)},
                     pageKey: {type: GraphQLString},
                     totalCount: {type: GraphQLInt},
                 }),
@@ -67,7 +78,7 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 pageSize: {type: GraphQLInt},
                 pageKey: {type: GraphQLString},
-                contractAddresses: {type: GraphQLList(GraphQLString)},
+                contractAddresses: {type: new GraphQLList(GraphQLString)},
             },
             resolve(parent, args, context) {
                 return nftController.getUserNfts(parent, args, context);
@@ -76,15 +87,15 @@ const RootQuery = new GraphQLObjectType({
         getNftData: {
             type: TokenType,
             args: {
-                token_id: {type: GraphQLNonNull(GraphQLString)},
-                contract_address: {type: GraphQLNonNull(GraphQLString)},
+                token_id: {type: new GraphQLNonNull(GraphQLString)},
+                contract_address: {type: new GraphQLNonNull(GraphQLString)},
             },
             resolve(parent, args, context) {
                 return nftController.getNftData(parent, args, context);
             },
         },
         getUserNftFolders: {
-            type: GraphQLList(NftFolderType),
+            type: new GraphQLList(NftFolderType),
             args: {
                 user_id: {type: GraphQLID},
             },
