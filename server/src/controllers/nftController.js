@@ -1,43 +1,85 @@
 const nftFoldersModel = require('../model/nftModel');
-const {GraphQLError} = require("graphql");
-const {errorNames} = require("../../errorTypes");
 const nftModel = require("../model/nftModel");
 const alchemy = require("../router/alchemy/alchemy");
-
+const {GraphQLError} = require('graphql')
+const {errorNames} = require('../../errorTypes')
 
 exports.createNftFolder = async (parent, args, context) => {
-    const {user} = await context
-    const a = await args
-    console.log(a)
-    const {name, user_id, tokens} = args;
-    if (!user) {
-        return new GraphQLError(errorNames.UNATHORIZED);
-    } else if (!name || !user_id) {
+    try {
+        const {user} = await context
+        const {name, tokens} = args;
+        if (!user) {
+            return new GraphQLError(errorNames.UNATHORIZED);
+        } else if (!name || tokens.length === 0) {
+            return new GraphQLError(errorNames.INVALID_DATA);
+        }
+        await nftFoldersModel.createNftFolder(args, user);
+        const res = await nftFoldersModel.getAllUserFolders(user.id);
+        console.log('create folder', res)
+        return res
+    } catch (e) {
         return new GraphQLError(errorNames.INVALID_DATA);
     }
-    return nftFoldersModel.createNftFolder(name, user_id, tokens);
 }
 
-exports.addTokenToFolder = async (parent, args, context) => {
+exports.addTokensToFolder = async (parent, args, context) => {
+    const {user, isAuth} = await context
+    const {folder_id, tokens} = args
+    if (!isAuth) {
+        return new GraphQLError(errorNames.UNATHORIZED);
+    } else if (!folder_id) {
+        return new GraphQLError(errorNames.INVALID_DATA);
+    }
+    try {
+        await nftFoldersModel.addTokensToFolder(folder_id, tokens, user.id);
+    } catch (e) {
+        console.log(e)
+        return new GraphQLError(errorNames.INVALID_DATA);
+    }
+}
+
+exports.deleteTokenFromFolder = async (parent, args, context) => {
     const {isAuth} = await context
-    const {folder_id, token_id, contract_address} = args
+    const {user} = await context
+    const {folder_id, token_id} = args
     if (!isAuth) {
         return new GraphQLError(errorNames.UNATHORIZED);
     } else if (!folder_id || !token_id) {
         return new GraphQLError(errorNames.INVALID_DATA);
     }
-    return nftFoldersModel.addTokenToFolder(folder_id, token_id, contract_address);
+    await nftFoldersModel.deleteTokenFromFolder(folder_id, token_id);
+    return await nftFoldersModel.getAllUserFolders(user.id);
+}
+
+exports.changeBannerUrl = async (parent, args, context) => {
+    const {isAuth} = await context
+    const {user} = await context
+    const {folder_id, bannerUrl} = args
+    if (!isAuth) {
+        return new GraphQLError(errorNames.UNATHORIZED);
+    } else if (!folder_id || !bannerUrl) {
+        return new GraphQLError(errorNames.INVALID_DATA);
+    }
+    await nftFoldersModel.changeBannerUrl(folder_id, bannerUrl);
+    return await nftFoldersModel.getAllUserFolders(user.id);
 }
 
 exports.getUserNftFolders = async (parent, args, context) => {
-    // const {isAuth, user} = await context
-    // const {user_id} = args
-    // if (!isAuth) {
-    //     return new GraphQLError(errorNames.UNATHORIZED);
-    // }
-    return await nftFoldersModel.getAllUserFolders(1);
+    const {isAuth, user} = await context
+    if (!isAuth || !user.id) {
+        return new GraphQLError(errorNames.UNATHORIZED);
+    }
+    return await nftFoldersModel.getAllUserFolders(user.id);
 }
 
+exports.getNftFolder = async (parent, args, context) => {
+    const {isAuth} = await context
+    if (!isAuth) {
+        return new GraphQLError(errorNames.UNATHORIZED);
+    }
+    const {folder_id} = args
+    return await nftFoldersModel.getFolderById(folder_id);
+}
 
 exports.getUserNfts = async (parent, args, context) => {
     try {
@@ -47,7 +89,6 @@ exports.getUserNfts = async (parent, args, context) => {
             return new GraphQLError(errorNames.UNATHORIZED);
         }
         const wallet_address = user.wallet_address
-console.log(args)
         const data = await nftModel.getAllUserNfts(wallet_address, contractAddresses, pageKey, pageSize);
         // for(let i = 0; i < data.ownedNfts.length; i++) {
         //     console.log(data.ownedNfts[i].contract.openSeaMetadata)

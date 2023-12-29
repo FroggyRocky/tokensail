@@ -29,11 +29,10 @@ app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
 //         exp: Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60,
 //         data: {
 //             wallet_address: '0x4b63F8e63FECC19039A7eAF8fFcFe817fC806e63',
-//             id: 2
+//             id: 1
 //         }
 //     }, process.env.JWT_SECRET);
 // }
-//
 // console.log(createTestToken())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

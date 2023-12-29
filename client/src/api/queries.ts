@@ -1,16 +1,13 @@
 import {walletAddressType} from "@store/authStore/authTypes";
 import {gql} from "@apollo/client";
 
+
+export const nftTokenPreviewData = 'name,tokenId,raw {metadata {name,image}},contract {address,openSeaMetadata {imageUrl}}'
+
 const Queries = {
     login(wallet_address: walletAddressType, signature: string, signedMsg: string) {
         return `query {
   login(wallet_address:"${wallet_address}", signature:"${signature}",message:"${signedMsg}") {
-    user {
-      id,
-      wallet_address,
-      email,
-      username,
-    }
     token {
     token,
     expiresOn,
@@ -43,45 +40,56 @@ const Queries = {
     }
     nft_folders {
       name,
+      id,
+      description,
+        banner_url,
+        
       tokens {
-        data {
-          image {
-            thumbnailUrl
-          }
-        }
+      contract_address,
+      token_id
+        data {${nftTokenPreviewData}}
       }
     }
   }
 }`
-    }
+    },
 }
 
 
 export const GET_ALL_USER_NFTS = gql`
     query GetUserNfts($pageKey: String, $pageSize: Int) {
-    getUserNfts(pageKey:$pageKey, pageSize: $pageSize) {
-       ownedNfts {
-        name,
-        tokenId,
-         raw {
-          metadata {
-            name
-            image
-          }
-    }
-        contract {
-      openSeaMetadata {
-        imageUrl
-      }
-    }
-      }
+    getUserNfts(pageKey:$pageKey, pageSize:$pageSize) {
+       ownedNfts {${nftTokenPreviewData}},
       pageKey,
       totalCount
         }
     }
 `
 
+export const GET_NFT_FOLDER = gql`
+    query GetNftFolder($id: ID!) {
+    getNftFolder(folder_id:$id) {
+      id,
+      name,
+      tokens {
+        token_id,
+        data {${nftTokenPreviewData}}
+      }
+    }
+    }
+`
 
-
+export const GET_NFT_FOLDERS = gql`
+    query GetUserNftFolders {
+    getUserNftFolders {
+      id,
+      name,
+      tokens {
+        token_id,
+        data {${nftTokenPreviewData}}
+      }
+    }
+    }
+`
 
 export {Queries};

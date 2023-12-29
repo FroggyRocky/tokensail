@@ -2,7 +2,7 @@ import styles from './outlinedBtn.module.scss'
 type Props = {
     isDisabled?: boolean
     type?: "button" | "submit" | "reset"
-    onClick?: () => void
+    onClick?: (...args:any[]) => void
     text: string
     width?: string
     height?: string

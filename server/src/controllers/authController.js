@@ -95,15 +95,18 @@ exports.login = async (parent, args, context) => {
 
 exports.auth = async (parent, args, context) => {
     const {user} = await context
+    let {folders_limit} = args;
+    if(!folders_limit) {
+        folders_limit = 2
+    }
     if (user) {
         const args = {
             user: user,
             limit: 6,
             offset: 0,
         }
-        const nft_folders = await nftModel.getAllUserFolders(user.id);
+        const nft_folders = await nftModel.getAllUserFolders(user.id, folders_limit, 0);
         const wallet_activity = await walletModel.getWalletHistory(args);
-
         return {
             user: user,
             nft_folders: nft_folders,

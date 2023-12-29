@@ -17,7 +17,6 @@ const {WalletInflowsOutflowsType, UserWalletHistoryType} = require('../bitquery/
 const {NftFolderType, UserType, JWTType} = require('../types/types')
 const {TokenType} = require('../alchemy/alchemyTypes')
 
-
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -40,6 +39,9 @@ const RootQuery = new GraphQLObjectType({
         auth: {
             type: new GraphQLObjectType({
                 name: 'Auth',
+                args: {
+                    folders_limit: {type: GraphQLInt},
+                },
                 fields: () => ({
                     user: {type: UserType},
                     nft_folders: {type: new GraphQLList(NftFolderType)},
@@ -57,13 +59,7 @@ const RootQuery = new GraphQLObjectType({
                 offset: {type: GraphQLInt},
             },
             resolve(parent, args, context) {
-                return {
-                    ethereum: {
-                        inflow: [],
-                        outflow: []
-                    }
-                }
-                // return walletController.getUserWalletActivity(parent, args, context);
+                return walletController.getUserWalletActivity(parent, args, context);
             },
         },
         getUserNfts: {
@@ -97,10 +93,20 @@ const RootQuery = new GraphQLObjectType({
         getUserNftFolders: {
             type: new GraphQLList(NftFolderType),
             args: {
-                user_id: {type: GraphQLID},
+                pageSize: {type: GraphQLInt},
+                pageKey: {type: GraphQLString}
             },
             resolve(parent, args, context) {
                 return nftController.getUserNftFolders(parent, args, context);
+            },
+        },
+        getNftFolder: {
+            type: NftFolderType,
+            args: {
+                folder_id: {type: GraphQLID},
+            },
+            resolve(parent, args, context) {
+                return nftController.getNftFolder(parent, args, context);
             },
         },
     },

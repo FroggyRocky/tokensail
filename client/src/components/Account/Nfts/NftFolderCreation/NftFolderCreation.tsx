@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {OutlinedBtn} from "@UIKit/OutlinedBtn/OutlinedBtn";
@@ -11,21 +11,24 @@ import {SimpleLoader} from "@UIKit/SimpleLoader/SimpleLoader";
 import {NftCard} from "@UIKit/Nfts/NftCard/NftCard";
 import {NftTokenPreviewType} from "@store/accountStore/accountTypes";
 import {CommonInput} from "@UIKit/CommonInput/CommonInput";
-import {FileAttach} from "@UIKit/FileAttach/FileAttach";
+import {authThunk} from "@store/authStore/authThunks";
+import {NftFolderType} from "@store/accountStore/accountTypes";
 
 const ITEMS_PER_PAGE = 10
 const MAX_DESCRIPTION_LENGTH = 100
 const MAX_GALLERY_NAME_LENGTH = 50
+
 const validationSchema = Yup.object({
     gallery_name: Yup.string().required('Gallery Name is required').max(MAX_GALLERY_NAME_LENGTH, 'Gallery Name should be less than 50 characters'),
     description: Yup.string().max(MAX_DESCRIPTION_LENGTH, 'Description should be less than 100 characters'),
-    banner_img: Yup.string(),
+    banner_img: Yup.string()
+        .matches(/(?:https?|ftp):\/\/\S+\.(?:jpg|jpeg|png|gif|bmp)/, 'Only images are allowed'),
 });
 
 const initialValues = {
     gallery_name: '',
     description: '',
-    banner_img: undefined as File | undefined,
+    banner_img: '',
 };
 
 
@@ -36,14 +39,25 @@ type NftPreviewType = {
         totalCount: number,
     }
 }
-
-export function NftFolderCreation() {
-    const [formStep, setFormStep] = useState(1)
-    const token = useAuthStore.getState().auth_token
-    const accountData = useAccountStore(state => state.accountData)
-    const [selectedTokens, setSelectedTokens] = useState<number[]>([])
+type Props = {
+    isSecondStepClosed?: boolean
+    folder_id?: string
+    handleSubmit?: (values: any, selectedToken?:Array<{ token_id: string, contract_address: string }>) => void
+    folderTokens?: Array<{token_id:string, contract_address:string}>
+} | {
+    isSecondStepClosed: true
+    folder_id: string
+    folderTokens: Array<{token_id:string, contract_address:string}>
+    handleSubmit?: (values: any, selectedToken?:Array<{ token_id: string, contract_address: string }>) => void
+}
+export function NftFolderCreation(props:Props) {
+    const [formStep, setFormStep] = useState(0)
+    const [selectedTokens, setSelectedTokens] = useState<Array<{token_id:string, contract_address:string}>>( [])
     const observerRef = useRef<IntersectionObserver | null>(null);
     const [generalError, setGeneralError] = useState<string | null>(null)
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+    const [search,setSearch] = useState<string>('')
+    const token = useAuthStore(state => state.auth_token);
     const {loading, error, data, previousData, fetchMore} = useQuery<NftPreviewType>(GET_ALL_USER_NFTS, {
         variables: {
             pageSize: ITEMS_PER_PAGE
@@ -54,6 +68,7 @@ export function NftFolderCreation() {
             }
         }
     });
+
     const [createGallery, {
         data: galleryData,
         loading: galleryLoading,
@@ -61,30 +76,29 @@ export function NftFolderCreation() {
     }] = useMutation(CREATE_NFT_FOLDER, {
         context: {
             headers: {
-                Content_Type: 'multipart/form-data',
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_JWT}`
+                Authorization: `Bearer ${token.token}`
             }
         },
-        onCompleted: (data) => {
-            console.log('Todo added successfully:', data.addTodo);
-            // You can perform additional actions after the mutation is completed
+        onCompleted: async (data:{createNftFolder:Array<NftFolderType>}) => {
+            setIsSubmitted(true)
+            const setNftFolders = useAccountStore.getState().setAccountNftFolders
+            setNftFolders(data.createNftFolder)
+            setSelectedTokens([])
+            formik.resetForm()
+            setTimeout(() => {
+                setIsSubmitted(false)
+            }, 10000)
         },
         onError: (error) => {
-            console.error('Error adding todo:', error);
-            // Handle errors here
+            setGeneralError(error.message)
         },
     });
+
     const observerOptions = {
         root: null,
         rootMargin: "0px",
         threshold: 0.5
     };
-
-
-    function handleBannerAttach(e: React.ChangeEvent<HTMLInputElement>) {
-        formik.setFieldValue('banner_img', e.target.files![0])
-        console.log(e.target.files![0])
-    }
 
     async function observeCallback(entries: any, observer: any) {
         if (entries[0].isIntersecting) {
@@ -95,7 +109,6 @@ export function NftFolderCreation() {
                 },
                 context: {
                     headers: {
-                        Content_Type: 'multipart/form-data',
                         Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_JWT}`
                     }
                 },
@@ -125,7 +138,6 @@ export function NftFolderCreation() {
         if (node) {
             observerRef.current.observe(node);
         }
-
     }
 
     const formik = useFormik({
@@ -136,63 +148,93 @@ export function NftFolderCreation() {
     })
 
     async function onSubmit(values: any) {
-        const formData = new FormData()
+        if(props.handleSubmit) {
+            props.handleSubmit(values, selectedTokens)
+            return
+        }
         if (selectedTokens.length === 0) {
             setGeneralError('Please select at least one Nft')
             return
         }
         setGeneralError('')
-        formData.append('gallery_name', values.gallery_name)
-        formData.append('description', values.description)
-        formData.append('banner_img', values.banner_img)
-        console.log(values.banner_img)
-        const res = await createGallery({
+        await createGallery({
             variables: {
-                data:  values.banner_img,
+                name: values.gallery_name,
+                description: values.description,
+                bannerUrl:  values.banner_img,
+                tokens: selectedTokens
             }
         })
-        console.log(res)
     }
 
-    function handleTokenSelection(tokenId: number) {
-        if (selectedTokens.includes(tokenId)) {
+    function handleTokenSelection(token_id: string, contract_address:string) {
+        const found = selectedTokens.find(token => token.token_id === token_id && token.contract_address === contract_address)
+        if (found) {
             setSelectedTokens(prevState => {
-                return prevState.filter(token => token !== tokenId)
+                return prevState.filter(token => token.token_id !== token_id && token.contract_address !== contract_address)
             })
             return
         }
+        const newToken = {token_id, contract_address}
         setSelectedTokens(prevState => {
-            return [...prevState, tokenId]
+            return [...prevState, newToken]
         })
     }
 
-    const Nfts = data?.getUserNfts.ownedNfts.map((nft, index) => {
-        if (data.getUserNfts.ownedNfts.length === index + 1) {
+    const Nfts = useMemo(() => {
+        if(!data) return;
+        let filteredNfts = data?.getUserNfts.ownedNfts
+        if(search) {
+            filteredNfts = filteredNfts?.filter(nft => nft.name?.toLowerCase().includes(search.toLowerCase()))
+        }
+        if(props.folderTokens) {
+            filteredNfts = filteredNfts?.filter(nft => {
+                return !props.folderTokens?.find(token => token.token_id === nft.tokenId && token.contract_address === nft.contract.address)
+            })
+        }
+        return filteredNfts?.map((nft, index) => {
+        const isSelected = !!selectedTokens.find(token => token.token_id === nft.tokenId && token.contract_address === nft.contract.address)
+        if (filteredNfts?.length === index + 1) {
             return <div ref={setObserver} className={'flex-shrink-0'}>
-                <NftCard isSelected={selectedTokens.includes(+nft.tokenId)}
-                         handleClick={() => handleTokenSelection(+nft.tokenId)} key={nft.tokenId}
+                <NftCard isSelected={isSelected}
+                         handleClick={() => handleTokenSelection(nft.tokenId, nft.contract.address)} key={nft.tokenId}
                          backupMedia={nft.contract.openSeaMetadata.imageUrl} id={+nft.tokenId} collectionName={nft.name}
                          media={nft.raw.metadata.image}/>
             </div>
         }
-        const isSelected = selectedTokens.includes(+nft.tokenId)
         return <div className={'flex-shrink-0'}>
-            <NftCard isSelected={isSelected} handleClick={() => handleTokenSelection(+nft.tokenId)} key={nft.tokenId}
+            <NftCard isSelected={isSelected} handleClick={() => handleTokenSelection(nft.tokenId, nft.contract.address)} key={nft.tokenId}
                      backupMedia={nft.contract.openSeaMetadata.imageUrl} id={+nft.tokenId} collectionName={nft.name}
                      media={nft.raw.metadata.image}/>
         </div>
-    })
+    })}, [search, selectedTokens, data])
+    function handleSearchChange(e: any) {
+        const value = e.target.value
+        setSearch(value)
+    }
     return <div>
         <form onSubmit={formik.handleSubmit}>
             {formStep === 0 ? <div>
                     <aside className={'flex flex-col align-baseline flex-grow items-center'}>
                         <h2 className={'text-center mb-5 font-medium'}>Choose Nfts for your Gallery Collection</h2>
-                        {data && <div className={'w-full my-4 flex-grow'}>
-                            <OutlinedBtn text={'Next'} type={'button'} onClick={() => setFormStep(1)}/>
+                        {props.isSecondStepClosed && props.handleSubmit &&
+                            <OutlinedBtn text={'Add tokens'} type={'button'} isDisabled={selectedTokens.length === 0}
+                                         onClick={() => props.handleSubmit && props.handleSubmit(formik.values, selectedTokens)}/>
+                        }
+                        {data && !props.isSecondStepClosed && <div className={'w-full my-4 flex-grow'}>
+                            <OutlinedBtn text={'Next'} type={'button'} onClick={() => {
+                                if(props.isSecondStepClosed) return
+                                setFormStep(1)
+                            }}/>
                         </div>}
+                        {data && <div className={'my-5'}>
+                            <CommonInput value={search} name={'search'} error={''}
+                                              label={'Search By name'} placeholder={'Search'}
+                                              handleChange={handleSearchChange}  />
+                        </div> }
                         {data ? <div className={'flex items-center gap-8 flex-wrap justify-center mb-5 max-w-2xl'}>
                                 {loading ? <SimpleLoader/> : <>
-                                    {Nfts}
+                                    {Nfts && Nfts.length > 0 ? Nfts : <p className={'text-center text-gray-500 text-xl'}>No Nfts found</p>}
                                 </>
                                 }
                             </div> :
@@ -210,13 +252,15 @@ export function NftFolderCreation() {
                                      error={formik.errors.description}
                                      label={'Description'} handleChange={formik.handleChange}
                                      charLimit={MAX_DESCRIPTION_LENGTH}/>
-                        <FileAttach name={'banner_img'} accept={'ímage/*'} handleChange={handleBannerAttach}
-                                    value={formik.values.banner_img?.name ?? ''}/>
+                        <CommonInput value={formik.values.banner_img} name={'banner_img'} placeholder={'Link to image'}
+                                     error={formik.errors.banner_img}
+                                     label={'Banner Image Link'} handleChange={formik.handleChange} />
                     </div>
                     {generalError && <p className={'text-red-500 text-xs mr-auto mt-3'}>{generalError}</p>}
+                    {isSubmitted && <p className={'text-green-400 text-xs mr-auto mt-3'}>Nft Folder has been successfully created</p>}
                     <div className={'flex items-center justify-between gap-3 mt-10'}>
-                        <OutlinedBtn text={'Prev'} type={'button'} onClick={() => setFormStep(0)}/>
-                        <OutlinedBtn text={'Create'} type={'submit'} isDisabled={Object.entries(formik.errors).length > 0}/>
+                        <OutlinedBtn text={'Prev'} type={'button'} onClick={() => setFormStep(0)} isDisabled={galleryLoading} />
+                        <OutlinedBtn text={'Create'} type={'submit'} isDisabled={Object.entries(formik.errors).length > 0 || galleryLoading } />
                     </div>
                 </div>
             }

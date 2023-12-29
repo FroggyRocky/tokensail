@@ -4,7 +4,8 @@ import {AddNftBox} from "@UIKit/Nfts/AddNftBox/AddNftBox";
 import {useEffect, useState} from "react";
 import {Modal} from "@UIKit/Modal/Modal";
 import {NftFolderCreation} from "@components/Account/Nfts/NftFolderCreation/NftFolderCreation";
-
+import {NftCard} from "@UIKit/Nfts/NftCard/NftCard";
+import Link from 'next/link'
 export function Home() {
     const accountData = useAccountStore(state => state.accountData)
     const [isNftModalOpen, setIsNftModalOpen] = useState(false)
@@ -26,7 +27,47 @@ useEffect(() => {
     }
 }, [isNftModalOpen])
 
-
+function recentGalleries() {
+        if(accountData?.nft_folders?.length) {
+            const lastGallery = accountData?.nft_folders[accountData?.nft_folders?.length - 1]
+            if(!lastGallery?.tokens?.length) return ''
+            const lastTokenData = lastGallery?.tokens[lastGallery?.tokens?.length - 1].data
+            if(accountData?.nft_folders?.length > 1) {
+                const lastButOneGallery = accountData?.nft_folders[accountData?.nft_folders?.length - 2]
+                if(!lastButOneGallery?.tokens?.length) return ''
+                const lastButOneTokenData = lastButOneGallery?.tokens[lastButOneGallery?.tokens?.length - 1].data
+            return <>
+                <Link href={`/account/gallery/${lastGallery?.id}`} className={'w-fit'}>
+                    <NftCard media={lastTokenData.raw.metadata.image} id={+lastGallery!.id}  collectionName={lastGallery.name}
+                             backupMedia={lastTokenData.contract.openSeaMetadata.imageUrl}  />
+                </Link>
+                <Link href={`/account/gallery/${lastButOneGallery?.id}`} className={'w-fit'}>
+                    <NftCard media={lastButOneTokenData.raw.metadata.image} id={+lastButOneGallery!.id}  collectionName={lastButOneTokenData.name}
+                             backupMedia={lastButOneTokenData.contract.openSeaMetadata.imageUrl} />
+                </Link>
+            </>
+                } else {
+                return <>
+                    <Link href={`/account/gallery/${lastGallery?.id}`} className={'w-fit'}>
+                        <NftCard media={lastTokenData.raw.metadata.image} id={+lastGallery!.id}  collectionName={lastGallery.name}
+                                 backupMedia={lastTokenData.contract.openSeaMetadata.imageUrl}  />
+                    </Link>
+                    <section className={'max-w-lg'} onClick={() => setIsNftModalOpen(true)}>
+                        <AddNftBox />
+                    </section>
+                        </>
+            }
+        } else {
+            return  <>
+                <section className={'max-w-lg'} onClick={() => setIsNftModalOpen(true)}>
+                    <AddNftBox />
+                </section>
+                <section className={'max-w-lg'} onClick={() => setIsNftModalOpen(true)}>
+                    <AddNftBox />
+                </section>
+            </>
+        }
+}
 
     return <div className={'flex items-center justify-center h-full py-5'}>
         {isNftModalOpen && <Modal handleClose={() => setIsNftModalOpen(false)} >
@@ -43,12 +84,7 @@ useEffect(() => {
             <aside>
                 <h2 className={'text-xl mb-3'}>Nft Galleries</h2>
                 <div  className={'flex flex-col justify-between h-full gap-5'}>
-            <section className={'max-w-lg'} onClick={() => setIsNftModalOpen(true)}>
-                <AddNftBox />
-            </section>
-            <section className={'max-w-lg'} onClick={() => setIsNftModalOpen(true)}>
-                <AddNftBox />
-            </section>
+                    {recentGalleries()}
                 </div>
             </aside>
             </div>

@@ -1,9 +1,9 @@
 import {useAuthStore} from "@store/authStore/authStore";
 import {AxiosResponse} from "axios";
 import {AuthAPI} from "@api/auth";
-import {unparseGraphQLResponse} from "../../lib/helpers/apiHelpers";
+import {unparseGraphQLResponse} from "@lib/helpers/apiHelpers";
 import {IAuthStore, walletAddressType} from "@store/authStore/authTypes";
-import {isTokenValid} from "../../lib/helpers/authHelpers";
+import {isTokenValid} from "@lib/helpers/authHelpers";
 import {useAccountStore} from "@store/accountStore/accountStore";
 
 export async function loginThunk(signature: string, signedMsg: string, wallet: walletAddressType | null = null) {
@@ -14,8 +14,6 @@ export async function loginThunk(signature: string, signedMsg: string, wallet: w
     }
     const wallet_address = useAuthStore.getState().wallet_address || wallet
     if (!wallet_address) throw new Error('No wallet address')
-    const accountData = useAccountStore.getState().accountData
-    if(accountData) return
     const res = await AuthAPI.login(wallet_address, signature, signedMsg)
     const {error, data} = unparseGraphQLResponse(res)
     if (!error) {
@@ -28,13 +26,10 @@ export async function loginThunk(signature: string, signedMsg: string, wallet: w
 
 export async function authThunk() {
     const setAccountData = useAccountStore.getState().setAccountData
-    const accountData = useAccountStore.getState().accountData
-    if(accountData?.user) return
     try {
         const res = await AuthAPI.auth()
         const {error, data} = unparseGraphQLResponse(res)
         if (!error) {
-            console.log(data)
             setAccountData(data.auth)
         } else {
             console.log('ERROR', error)

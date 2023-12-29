@@ -1,15 +1,14 @@
-import {WithAuth} from "../../lib/HOCs/WithAuth";
-
+import {WithAuth} from "@lib/HOCs/WithAuth";
+import {Wallet} from '@components/Account/Wallet/Wallet'
 type Props = {
 
 };
 
 function WalletModule(props: Props) {
-    return <div>
-<h1>Wallet</h1>
-    </div>
+    return <Wallet />
 };
 
 
 
-export default WalletModule
+ const WalletWithAuth = WithAuth(WalletModule)
+export default WalletWithAuth

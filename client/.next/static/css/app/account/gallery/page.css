@@ -1,0 +1,251 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[12].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[12].oneOf[9].use[5]!./src/UIKit/Loader/loader.module.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.loader_loader__w_C57 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #222229;
+}
+
+.loader_loader__planet__3O0QN {
+  display: block;
+  width: 125px;
+  height: 125px;
+  position: relative;
+  transform-style: preserve-3d;
+  border-radius: 50%;
+  background: #fcc96b;
+  background: rgb(252, 201, 107);
+  background: linear-gradient(180deg, rgb(252, 201, 107) 0%, rgb(252, 201, 107) 15%, rgb(247, 174, 1) 15%, rgb(247, 174, 1) 19%, rgb(252, 201, 107) 19%, rgb(252, 201, 107) 22%, rgb(247, 174, 1) 22%, rgb(247, 174, 1) 28%, rgb(252, 201, 107) 28%, rgb(252, 201, 107) 31%, rgb(252, 201, 107) 33%, rgb(252, 201, 107) 36%, rgb(247, 174, 1) 36%, rgb(247, 174, 1) 48%, rgb(252, 201, 107) 48%, rgb(252, 201, 107) 55%, rgb(247, 174, 1) 55%, rgb(247, 174, 1) 66%, rgb(252, 201, 107) 66%, rgb(252, 201, 107) 70%, rgb(247, 174, 1) 70%, rgb(247, 174, 1) 73%, rgb(252, 201, 107) 73%, rgb(252, 201, 107) 82%, rgb(247, 174, 1) 82%, rgb(247, 174, 1) 86%, rgb(252, 201, 107) 86%);
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.25), inset 8px -4px 6px rgba(199, 128, 0, 0.5), inset -8px 4px 8px rgba(255, 235, 199, 0.5), inset 20px -5px 12px #f7ae01, 0 0 100px rgba(255, 255, 255, 0.35);
+  transform: rotateZ(-15deg);
+}
+
+.loader_loader__planet__3O0QN::before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 16px solid #7b6f42;
+  border-top-width: 0;
+  border-radius: 50%;
+  box-shadow: 0 -2px 0 #b1a693;
+  animation: loader_rings1__UHiba 0.8s infinite linear;
+}
+
+.loader_loader__planet__3O0QN::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 8px solid #b1a693;
+  border-top-width: 0;
+  border-radius: 50%;
+  box-shadow: 0 -2px 0 #7b6f42;
+  animation: loader_rings2__AcHt0 0.8s infinite linear;
+}
+
+@keyframes loader_rings1__UHiba {
+  0% {
+    transform: rotateX(65deg) rotateZ(0deg) scale(1.75);
+  }
+  100% {
+    transform: rotateX(65deg) rotateZ(360deg) scale(1.75);
+  }
+}
+@keyframes loader_rings2__AcHt0 {
+  0% {
+    transform: rotateX(65deg) rotateZ(0deg) scale(1.7);
+  }
+  100% {
+    transform: rotateX(65deg) rotateZ(360deg) scale(1.7);
+  }
+}
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[12].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[12].oneOf[9].use[5]!./src/UIKit/OutlinedBtn/outlinedBtn.module.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.outlinedBtn_outlinedBtn__eRdn7 {
+  border: 1px solid var(--color-button);
+  padding: 20px 5px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.outlinedBtn_outlinedBtn__eRdn7:hover {
+  background-color: var(--color-button);
+  color: var(--color-white);
+}
+.outlinedBtn_outlinedBtn_disabled__R0xYz {
+  background-color: rgba(128, 128, 128, 0.47);
+  opacity: 0.8;
+  color: var(--color-white);
+  cursor: not-allowed;
+  border: 1px solid grey;
+}
+.outlinedBtn_outlinedBtn_disabled__R0xYz:hover {
+  background-color: rgba(128, 128, 128, 0.47);
+  color: var(--color-white);
+}
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[12].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[12].oneOf[9].use[5]!./src/UIKit/ImageWithLoader/imageWithLoader.module.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.imageWithLoader_imageWithLoader__lNPpp {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(199, 199, 199);
+  flex-shrink: 0;
+  position: relative;
+}
+.imageWithLoader_imageWithLoader_loading__i6zEc {
+  min-height: 252px;
+  animation: imageWithLoader_pulse__4wb8h 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.imageWithLoader_imageWithLoader__img__nOOC4 {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: 100%;
+  visibility: visible;
+}
+.imageWithLoader_imageWithLoader__img_loading__Au3lT {
+  visibility: hidden;
+}
+.imageWithLoader_imageWithLoader__loader__gJB4h {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  text-align: center;
+  display: flex;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  justify-content: center;
+  align-items: center;
+  animation: imageWithLoader_spin__EWaUe 1s linear infinite;
+  color: rgb(152, 152, 152);
+}
+
+/* animations */
+@keyframes imageWithLoader_spin__EWaUe {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes imageWithLoader_pulse__4wb8h {
+  50% {
+    opacity: 0.5;
+  }
+}
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[12].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[12].oneOf[9].use[5]!./src/UIKit/Nfts/NftCard/nftCard.module.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.nftCard_nftCard__dKO15 {
+  width: 250px;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  border: 0.5px solid transparent;
+  position: relative;
+  border-radius: 10px;
+  overflow-y: hidden;
+  min-height: 252px;
+  z-index: 2;
+}
+.nftCard_nftCard_selected__EBstF {
+  border: 1px solid var(--color-teal);
+  transform: rotateY(-10deg) translateZ(20px);
+}
+.nftCard_nftCard_selected__EBstF::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(52, 152, 219, 0.42);
+  z-index: 5;
+}
+.nftCard_nftCard_shadow__nf_WH {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0px 0px 10px 10px rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.62);
+  border-radius: 10px;
+  z-index: 5;
+  display: none;
+}
+.nftCard_nftCard__checkmark__ZspFn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-link);
+  font-size: 20px;
+  font-weight: 700;
+  z-index: 20;
+}
+.nftCard_nftCard__dKO15 img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  transition: all 0.4s ease-in-out;
+  position: relative;
+}
+.nftCard_nftCard__dKO15:hover {
+  border: 1px solid ghostwhite;
+  transform: rotateY(-10deg) translateZ(20px);
+}
+.nftCard_nftCard__dKO15:hover .nftCard_nftCard_shadow__nf_WH {
+  display: block;
+}
+.nftCard_nftCard__dKO15:hover .nftCard_nftCard__collectionName___Pn3S {
+  transform: translateY(0%);
+  color: var(--color-link);
+}
+.nftCard_nftCard__dKO15:active {
+  border: 0.5px solid var(--color-teal);
+}
+.nftCard_nftCard__collectionName___Pn3S {
+  font-size: 15px;
+  font-family: var(--font-primary);
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: transparent;
+  transform: translateY(120%);
+  -webkit-text-stroke: 1px var(--color-link);
+  -webkit-text-stroke-width: 1px;
+  text-shadow: 2px 2px 10px var(--color-link);
+  transition: all 0.1s ease-in-out;
+  text-align: center;
+  letter-spacing: 0.2em;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .nftCard_nftCard__dKO15 {
+    min-height: 250px;
+  }
+  .nftCard_nftCard__dKO15:hover {
+    transform: none;
+  }
+  .nftCard_nftCard__dKO15:hover .nftCard_nftCard__collectionName___Pn3S {
+    transform: translateY(0%);
+  }
+}

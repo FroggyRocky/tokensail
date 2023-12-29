@@ -9,15 +9,18 @@ export enum EnumAccountSteps {
 
 export interface IAccountStore {
     accountStep: EnumAccountSteps | undefined
-    accountData: AccountDataType | undefined
+    accountData: AccountDataType | undefined,
+    allNftTokens: NftFolderType[] | undefined,
     setAccountData: (accountData: AccountDataType) => void
     setAccountStep: (accountStep: EnumAccountSteps) => void
+    setAllNftTokens: (allNftTokens: NftFolderType[]) => void
+    setAccountNftFolders: (nftFolders: NftFolderType[]) => void
 }
 
 
 export type AccountDataType  = {
     user:UserDataType | undefined,
-    nft_folders: NftFoldersType[] | undefined,
+    nft_folders: NftFolderType[] | undefined,
     wallet_activity: WalletActivityType | undefined,
 }
 
@@ -29,11 +32,15 @@ type UserDataType = {
     isActive: boolean | undefined;
 }
 
-export type NftFoldersType = {
+export type NftFolderType = {
     id: string;
     name: string;
-    tokens: walletAddressType[] | undefined,
-    user_id: number | undefined
+    tokens: Array<{
+        contract_address: string;
+        token_id: string;
+        data: NftTokenPreviewType;
+    }> | undefined,
+    user_id?: number | undefined
 }
 
 

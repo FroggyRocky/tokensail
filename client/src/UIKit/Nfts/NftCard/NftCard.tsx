@@ -19,6 +19,7 @@ export function NftCard(props: Props) {
         props.handleClick(props.id)
     }
     return <div id={props.id.toString()} className={`${styles.nftCard} ${props.isSelected && styles.nftCard_selected}`} onClick={chooseAsset}>
+        <div className={styles.nftCard_shadow}></div>
         <ImageWithLoader backupImgSrc={props.backupMedia ?? undefined} setImgLoaderState={setImgLoaderState} isImgLoading={isImgLoading} imgSrc={props.media}/>
         <p className={styles.nftCard__collectionName}>{props.collectionName}</p>
         {props.isSelected && <IoCheckmarkCircleOutline size={35} className={styles.nftCard__checkmark} />

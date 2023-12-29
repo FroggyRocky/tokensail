@@ -26,9 +26,6 @@ body {
     font-family: var(--font-primary);
     color: var(--font-color-primary);
     background-color: var(--color-primary);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     min-height: 100vh;
 }
 

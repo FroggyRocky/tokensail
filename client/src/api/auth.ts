@@ -4,8 +4,7 @@ import {apiBase} from "../../URLs";
 import {AccountDataType} from "@store/accountStore/accountTypes";
 import {walletAddressType} from "@store/authStore/authTypes";
 import {useAuthStore} from "@store/authStore/authStore";
-import {isTokenValid} from "../lib/helpers/authHelpers";
-import {graphQLResponseType} from "../lib/helpers/apiHelpers";
+import {graphQLResponseType} from "@lib/helpers/apiHelpers";
 
 const axiosConfig = axios.create({
     withCredentials: true,
@@ -20,8 +19,6 @@ const AuthAPI = {
     },
     async auth() {
         const token = useAuthStore.getState().auth_token
-        if (!token.token) throw new Error('No token')
-        if (!isTokenValid(token.expiresOn)) throw new Error('Token expired')
         const res: AxiosResponse<graphQLResponseType<{ auth: AccountDataType }>> = await axiosConfig.post(apiBase, {
                 query: Queries.auth()
             }, {

@@ -22,6 +22,18 @@
       z-index:5;
     }
   }
+  &_shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0px 0px 10px 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.62);
+    border-radius: 10px;
+    z-index: 5;
+    display: none;
+  }
   &__checkmark {
     position: absolute;
     top: 10px;
@@ -46,6 +58,9 @@
   &:hover {
     border: 1px solid ghostwhite;
     transform: rotateY(-10deg) translateZ(20px);
+    }
+&:hover &_shadow {
+  display: block;
   }
   &:hover &__collectionName  {
     transform: translateY(0%);
@@ -70,22 +85,11 @@
     transition: all 0.1s ease-in-out;
     text-align: center;
     letter-spacing: 0.2em;
-    animation: flicker 1.5s ease-in-out infinite alternate;
     z-index: 10;
   }
 }
 
 
-@keyframes flicker {
-  0% {
-    opacity: 0.5;
-    text-shadow: 2px 2px 10px var(--color-teal);
-  }
-  100% {
-    opacity: 1;
-    text-shadow: 2px 2px 20px var(--color-teal);
-  }
-}
 
 @media (max-width: 768px) {
   .nftCard {

@@ -1,9 +1,10 @@
-import Nft from "@modules/Account/Nfts";
+'use client';
+import {Nfts} from "@components/Account/Nfts/Nfts";
 
 type Props = {
 
 };
 
-export default async function Acc(props: Props) {
-    return <Nft />
+export default async function Page(props: Props) {
+    return <Nfts />
 };

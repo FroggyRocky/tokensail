@@ -40,3 +40,17 @@ export function useClickOutside(ref:any, callback:any) {
         };
     });
 }
+
+
+export function useObserver(ref:any, callback:any, options:any = {}) {
+    const observer = useRef<any>(null)
+    useEffect(() => {
+        if(observer.current) observer.current.disconnect()
+
+        observer.current = new IntersectionObserver(callback, options);
+        if(ref.current) observer.current.observe(ref.current)
+        return () => {
+            observer.current.disconnect()
+        }
+    }, [ref, callback, options])
+}

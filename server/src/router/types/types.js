@@ -9,10 +9,12 @@ const {
     GraphQLNonNull,
     GraphQLEnumType,
     GraphQLInt,
-    GraphQLBoolean
+    GraphQLBoolean, GraphQLInputObjectType
 } = require('graphql');
 const {TokenType} = require('../alchemy/alchemyTypes')
 const {WalletInflowsOutflowsType, UserWalletActivityType} = require('../bitquery/bitqueryTypes')
+
+
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
@@ -44,14 +46,9 @@ const NftFolderType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
-        tokens: {type: new GraphQLList(new GraphQLObjectType({
-                    name: 'folderTokens',
-                    fields: () => ({
-                        token_id: {type: GraphQLString},
-                        contract_address: {type: GraphQLString},
-                        data: {type: TokenType}
-                    })
-                }))},
+        description: {type: GraphQLString},
+        banner_url: {type: GraphQLString},
+        tokens: {type: new GraphQLList(FolderTokenType)},
         user_id: {type: GraphQLID},
         user: {
             type: UserType,
@@ -62,10 +59,26 @@ const NftFolderType = new GraphQLObjectType({
     })
 })
 
-
+const FolderTokenType = new GraphQLObjectType({
+    name: 'FolderTokenType',
+    fields: () => ({
+        token_id: {type: GraphQLString},
+        contract_address: {type: GraphQLString},
+        data: {type: TokenType}
+    })
+})
+const FolderTokenInput = new GraphQLInputObjectType({
+    name: 'FolderTokenInput',
+    fields: () => ({
+        token_id: {type: GraphQLString},
+        contract_address: {type: GraphQLString},
+    })
+})
 
 module.exports = {
     UserType,
     NftFolderType,
-    JWTType
+    JWTType,
+    FolderTokenType,
+    FolderTokenInput
 }

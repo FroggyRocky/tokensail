@@ -7,34 +7,59 @@ const {
     GraphQLNonNull,
     GraphQLEnumType,
     GraphQLScalarType,
+    GraphQLInputField
 } = require('graphql');
-const {UserType, NftFolderType} = require('../types/types')
+const {UserType, NftFolderType, FolderTokenType, FolderTokenInput} = require('../types/types')
 const nftController = require("../../controllers/nftController");
 const {GraphQLUpload, } = require('graphql-upload')
+
+
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
         createNftFolder: {
-            type: NftFolderType,
+            type: new GraphQLList(NftFolderType),
             args: {
-                data: {type: GraphQLUpload},
+                name: {type: GraphQLString},
+                description: {type: GraphQLString},
+                bannerUrl: {type: GraphQLString},
+                tokens: {type: new GraphQLList(FolderTokenInput)},
             },
-            resolve(_, { data }, context) {
-                return nftController.createNftFolder(_, { data }, context);
+            resolve(parent, args, context) {
+                return nftController.createNftFolder(parent, args, context);
             }
         },
-        addNftToFolder: {
-            type: NftFolderType,
+        addTokensToFolder: {
+            type: new GraphQLList(NftFolderType),
             args: {
-                token_id: {type: GraphQLString},
-                user_id: {type: GraphQLID},
+                tokens: {type: new GraphQLList(FolderTokenInput)},
                 folder_id: {type: GraphQLID},
             },
             resolve(parent, args, context) {
-                return nftController.addTokenToFolder(parent, args, context);
+                return nftController.addTokensToFolder(parent, args, context);
             }
         },
-    }
+        deleteTokenFromFolder: {
+            type: new GraphQLList(NftFolderType),
+            args: {
+                token: {type: FolderTokenInput},
+                folder_id: {type: GraphQLID},
+            },
+            resolve(parent, args, context) {
+                return nftController.deleteTokenFromFolder(parent, args, context);
+            }
+        },
+        changeBannerUrl: {
+            type: new GraphQLList(NftFolderType),
+            args: {
+                folder_id: {type: GraphQLID},
+                bannerUrl: {type: GraphQLString},
+            },
+            resolve(parent, args, context) {
+                return nftController.changeBannerUrl(parent, args, context);
+            }
+        },
+        }
 })
 
 module.exports = Mutation;
