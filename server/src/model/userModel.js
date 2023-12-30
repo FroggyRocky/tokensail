@@ -64,4 +64,53 @@ exports.changeUserData = (id, payload) => {
     });
 }
 
+exports.followCrypto = async (id, args) => {
+    const {crypto} = args
+    const user = await prisma.users.findUnique({
+        where: {
+            id: id
+
+        }
+    })
+    const followed = user['following_cryptos']
+    if(followed.includes(crypto)) {
+        return user
+    }
+    return prisma.users.update({
+        where: {
+            id: id
+        },
+        data: {
+            following_cryptos: {
+                push: crypto
+            }
+        }
+    });
+}
+
+exports.unfollowCrypto = async (id, args) => {
+    const {crypto} = args
+    const user = await prisma.users.findUnique({
+        where: {
+            id: id
+
+        }
+    })
+    const followed = user['following_cryptos']
+    if(!followed) {
+        return user
+    }
+    const filtered = followed.filter(c => c !== crypto)
+    return prisma.users.update({
+        where: {
+            id: id
+        },
+        data: {
+            following_cryptos: {
+                set: filtered
+            }
+        }
+    });
+}
+
 

@@ -19,14 +19,18 @@ exports.getWalletInflowsOutflows = async (args) => {
                 "X-API-KEY": process.env.BITQUERY_API_KEY
             }
         })
-        return res.data.data
+        let updatedData = res.data.data['ethereum']
+        updatedData.inflowCount = updatedData.inflow.length
+        updatedData.outflowCount = updatedData.outflow.length
+        return updatedData
     } catch (e) {
         console.log(e)
     }
 }
 
 exports.getWalletHistory = async (args) => {
-    const {limit, offset, user} = args;
+    const {limit, offset:page, user} = args;
+    const offset = limit * page;
     const res = await axios.post('https://graphql.bitquery.io', {
         query: addressWalletInflowsOutflows,
         variables: {

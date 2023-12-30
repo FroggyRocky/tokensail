@@ -49,6 +49,22 @@ export const REMOVE_TOKEN_FROM_FOLDER = gql`
     }
 `
 
+export const FOLLOW_CRYPTO = gql`
+mutation FollowCrypto($crypto: String!) {
+  followCrypto(crypto:$crypto) {
+    following_cryptos
+  }
+}
+`
+
+export const UNFOLLOW_CRYPTO = gql`
+mutation UnfollowCrypto($crypto: String!) {
+  unfollowCrypto(crypto:$crypto) {
+    following_cryptos
+  }
+}
+`
+
 
 
 

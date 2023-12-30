@@ -8,16 +8,16 @@ datasource db {
 }
 
 model users {
-  id               Int           @id @default(autoincrement())
-  wallet_address   String        @unique
-  username         String?
-  email            String?
-  isActive         Boolean       @default(false)
-  nft_folders      nft_folders[]
-  following_tokens String[]      @default([])
-  following_users  String[]      @default([])
-  following_crypto String[]      @default([])
-  createdAt        DateTime      @default(now())
+  id                Int           @id @default(autoincrement())
+  wallet_address    String        @unique
+  username          String?
+  email             String?
+  isActive          Boolean       @default(false)
+  nft_folders       nft_folders[]
+  following_tokens  String[]      @default([])
+  following_users   String[]      @default([])
+  following_cryptos String[]      @default([])
+  createdAt         DateTime      @default(now())
 }
 
 model nft_folders {

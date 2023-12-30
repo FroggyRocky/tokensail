@@ -70,7 +70,7 @@ const folders = await prisma.nft_folders.findMany({
 });
 const modified_folders = await Promise.all(folders.map(async (folder) => {
   const {tokens, ...rest} = folder;
-  console.log(tokens)
+
   const modified_tokens = await Promise.all(tokens.map(async (token) => {
         const {contract_address, token_id} = token;
         const data = await alchemy.nft.getNftMetadata(contract_address, token_id);

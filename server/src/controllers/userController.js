@@ -14,7 +14,28 @@ exports.getUserData = async (parent, args, context) => {
     }
     return user
 }
-
+exports.followCrypto = async (parent, args, context) => {
+    const ALLOWED_VALUES = ['ETH', 'BTC', 'USDT']
+    const {user} = await context
+    if (!user || !user.id) {
+        return new GraphQLError(errorNames.UNATHORIZED);
+    }
+    if (!args.crypto || !ALLOWED_VALUES.includes(args.crypto)) {
+        return new GraphQLError(errorNames.INVALID_DATA);
+    }
+    return userModel.followCrypto(user.id, args)
+}
+exports.unfollowCrypto = async (parent, args, context) => {
+    const ALLOWED_VALUES = ['ETH', 'BTC', 'USDT']
+    const {user} = await context
+    if (!user || !user.id) {
+        return new GraphQLError(errorNames.UNATHORIZED);
+    }
+    if (!args.crypto || !ALLOWED_VALUES.includes(args.crypto)) {
+        return new GraphQLError(errorNames.INVALID_DATA);
+    }
+    return userModel.unfollowCrypto(user.id, args)
+}
 exports.changeUserData = async (parent, args, context) => {
     const {user} = await context
     if (!user) {

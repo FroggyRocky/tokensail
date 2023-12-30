@@ -26,11 +26,13 @@ export async function loginThunk(signature: string, signedMsg: string, wallet: w
 
 export async function authThunk() {
     const setAccountData = useAccountStore.getState().setAccountData
+    const setFollowingCryptos = useAccountStore.getState().setFollowingCryptos
     try {
         const res = await AuthAPI.auth()
         const {error, data} = unparseGraphQLResponse(res)
         if (!error) {
             setAccountData(data.auth)
+            setFollowingCryptos(data.auth.user?.following_cryptos || [])
         } else {
             console.log('ERROR', error)
         }

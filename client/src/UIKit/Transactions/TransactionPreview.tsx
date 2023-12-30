@@ -8,6 +8,7 @@ type Props = {
     amount: number;
     currency: string;
     date: Date | string;
+    address?: string;
 };
 
 export function TransactionPreview(props: Props) {
@@ -34,13 +35,14 @@ export function TransactionPreview(props: Props) {
     }
 
     return <div>
-        <div className={"grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 justify-between items-center gap-0.5"}>
+        <div className={"grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 justify-between items-center gap-0.5"}>
             <p>
             {chooseIcon()}
             </p>
             <p className={'mr-3'}>{parseFloat(props.amount.toFixed(2))}</p>
             <p className={'hidden sm:block'}>{props.currency}</p>
             <p className={'hidden md:block'}>{formatWithDotDate(props.date)}</p>
+            {props.address && <p className={'hidden md:block'}>{props.address.slice(0,6) + '...'}</p>}
             <p className={"ml-auto"}>
             {chooseTransactionIcon()}
             </p>

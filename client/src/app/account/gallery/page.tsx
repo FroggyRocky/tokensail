@@ -3,7 +3,7 @@ import {useQuery} from "@apollo/client";
 import {GET_NFT_FOLDERS} from '@api/queries'
 import {useAuthStore} from "@store/authStore/authStore";
 import {Loader} from '@UIKit/Loader/Loader'
-import {GalleryFolders} from "@components/Account/Gallery/GalleryFolders";
+import GalleryFolders from "@modules/Account/GalleryFolders";
 import {NftFolderType} from '@store/accountStore/accountTypes'
 type Props = {};
 
@@ -20,7 +20,5 @@ export default function Page(props: Props) {
         }
     });
    if(loading || !data) return <Loader/>
-    return <div>
-        <GalleryFolders folders_data={data.getUserNftFolders} />
-    </div>
+    return <GalleryFolders folders_data={data.getUserNftFolders} />
 };

@@ -11,10 +11,13 @@ export interface IAccountStore {
     accountStep: EnumAccountSteps | undefined
     accountData: AccountDataType | undefined,
     allNftTokens: NftFolderType[] | undefined,
+    followingCryptos: SupportedCurrenciesType[] | [undefined],
+    currencyDateToCompare: string,
     setAccountData: (accountData: AccountDataType) => void
     setAccountStep: (accountStep: EnumAccountSteps) => void
     setAllNftTokens: (allNftTokens: NftFolderType[]) => void
     setAccountNftFolders: (nftFolders: NftFolderType[]) => void
+    setFollowingCryptos: (followingCurrencies: SupportedCurrenciesType[]) => void
 }
 
 
@@ -44,6 +47,7 @@ export type NftFolderType = {
 }
 
 
+export type SupportedCurrenciesType = 'BTC' | 'ETH' | 'USDT'
 
 export type WalletActivityType = Array<WalletTransactionType & {type:'inflow' | 'outflow'}>
 

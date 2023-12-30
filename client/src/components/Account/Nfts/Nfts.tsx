@@ -5,6 +5,7 @@ import {NftTokenPreviewType} from "@store/accountStore/accountTypes";
 import React, {useMemo, useRef, useState} from "react";
 import {NftCard} from "@UIKit/Nfts/NftCard/NftCard";
 import {AccountLayout} from "@components/Account/AccountLayout";
+import {SimpleLoader} from "@UIKit/SimpleLoader/SimpleLoader";
 
 type Props = {
 
@@ -88,7 +89,8 @@ export function Nfts(props: Props) {
     useObserver(lastElementRef, observeCallback, observerOptions)
     return <AccountLayout>
         <div className={'flex gap-10 flex-wrap items-center justify-center my-5'}>
-        {Nfts && Nfts.length > 0 ? Nfts : <p className={'text-green-400 text-xs mr-auto mt-3'}>No NFTs found</p>}
+            {loading ? <SimpleLoader /> :
+        Nfts && Nfts.length > 0 ? Nfts : <p className={'text-green-400 text-xs mr-auto mt-3'}>No NFTs found</p>}
     </div>
     </AccountLayout>
 };

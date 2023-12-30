@@ -56,10 +56,26 @@ const RootQuery = new GraphQLObjectType({
             type: WalletInflowsOutflowsType,
             args: {
                 limit: {type: GraphQLInt},
-                offset: {type: GraphQLInt},
+                page: {type: GraphQLInt},
             },
             resolve(parent, args, context) {
                 return walletController.getUserWalletActivity(parent, args, context);
+            },
+        },
+        getAllWalletHistory: {
+            type: new GraphQLObjectType({
+                name: 'GetAllWalletHistoryType',
+                fields: () => ({
+                    history: {type: new GraphQLList(UserWalletHistoryType)},
+                    count: {type: GraphQLInt},
+                }),
+            }),
+            args: {
+                limit: {type: GraphQLInt},
+                page: {type: GraphQLInt},
+            },
+            resolve(parent, args, context) {
+                return walletController.getAllWalletHistory(parent, args, context);
             },
         },
         getUserNfts: {

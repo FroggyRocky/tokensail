@@ -15,7 +15,6 @@ exports.createNftFolder = async (parent, args, context) => {
         }
         await nftFoldersModel.createNftFolder(args, user);
         const res = await nftFoldersModel.getAllUserFolders(user.id);
-        console.log('create folder', res)
         return res
     } catch (e) {
         return new GraphQLError(errorNames.INVALID_DATA);

@@ -3,7 +3,8 @@ import {gql} from "@apollo/client";
 
 
 export const nftTokenPreviewData = 'name,tokenId,raw {metadata {name,image}},contract {address,openSeaMetadata {imageUrl}}'
-
+export const walletActivityData = 'amount,address {address},currency {symbol},date {date}'
+export const walletAllHistoryData = 'amount,address {address},currency {symbol},date {date},type'
 const Queries = {
     login(wallet_address: walletAddressType, signature: string, signedMsg: string) {
         return `query {
@@ -23,21 +24,10 @@ const Queries = {
       email,
       username,
       username,
-      isActive
+      isActive,
+      following_cryptos
     }
-    wallet_activity {
-    amount,
-      address {
-        address
-      },
-      currency {
-        symbol
-      }, 
-      date {
-        date
-      }
-      type
-    }
+    wallet_activity {${walletAllHistoryData}},
     nft_folders {
       name,
       id,
@@ -91,5 +81,23 @@ export const GET_NFT_FOLDERS = gql`
     }
     }
 `
+export const GET_USER_WALLET_INFLOW_OUTFLOW = gql`
+query ($limit: Int!, $page: Int!) {
+  getUserWalletActivity(limit:$limit, page:$page) {
+      outflow {${walletActivityData}},
+        inflow {${walletActivityData}},
+        outflowCount,
+        inflowCount
+    }
+  }
+`
 
+export const GET_USER_WALLET_HISTORY = gql`
+query ($limit: Int!, $page: Int!) {
+  getAllWalletHistory(limit:$limit, page:$page) {
+      history {${walletAllHistoryData}},
+      count
+    }
+  }
+`
 export {Queries};

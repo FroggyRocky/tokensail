@@ -23,6 +23,7 @@ const UserType = new GraphQLObjectType({
         email: {type: GraphQLString},
         username: {type: GraphQLString},
         isActive: {type: GraphQLBoolean},
+        following_cryptos: {type: new GraphQLList(GraphQLString)},
         // nft_folders: {
         //     type: GraphQLList(NftFolderType),
         //     resolve(parent, args, context) {

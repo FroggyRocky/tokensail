@@ -90,7 +90,7 @@ export function GalleryFolder(props: Props) {
     }
 
     async function handleSubmit(values: any, selectedTokens?: Array<{ token_id: string, contract_address: string }>) {
-        console.log(selectedTokens)
+
         await addTokens({
             variables: {
                 folderId: props.folder_id,

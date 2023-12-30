@@ -12,7 +12,7 @@ const {
 const {UserType, NftFolderType, FolderTokenType, FolderTokenInput} = require('../types/types')
 const nftController = require("../../controllers/nftController");
 const {GraphQLUpload, } = require('graphql-upload')
-
+const userController = require("../../controllers/userController");
 
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
@@ -47,6 +47,24 @@ const Mutation = new GraphQLObjectType({
             },
             resolve(parent, args, context) {
                 return nftController.deleteTokenFromFolder(parent, args, context);
+            }
+        },
+        followCrypto: {
+            type: UserType,
+            args: {
+                crypto: {type: GraphQLNonNull(GraphQLString)},
+            },
+            resolve(parent, args, context) {
+                return userController.followCrypto(parent, args, context);
+            }
+        },
+        unfollowCrypto: {
+            type: UserType,
+            args: {
+                crypto: {type: GraphQLNonNull(GraphQLString)},
+            },
+            resolve(parent, args, context) {
+                return userController.unfollowCrypto(parent, args, context);
             }
         },
         changeBannerUrl: {

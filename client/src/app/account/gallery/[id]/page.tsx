@@ -4,7 +4,7 @@ import {useQuery} from "@apollo/client";
 import {useAuthStore} from "@store/authStore/authStore";
 import {GET_NFT_FOLDER} from '@api/queries'
 import {Loader} from '@UIKit/Loader/Loader'
-import {GalleryFolder} from "@components/Account/Gallery/GalleryFolder";
+import GalleryFolder from "@modules/Account/GalleryFolder";
 import {NftFolderType} from '@store/accountStore/accountTypes'
 
 type Props = {

@@ -19,7 +19,7 @@ export function AccountHeader(props: Props) {
                 <Link href={'/account/nft'}  className={'hover:text-zinc-300'}>Nft</Link>
                 <Link href={'/account/gallery'} className={'hover:text-zinc-300'}>Gallery</Link>
             </aside>
-        <Link href={'/account/bio'} className={'flex items-center cursor-pointer hover:opacity-60'} >
+        <Link href={'/account'} className={'flex items-center cursor-pointer hover:opacity-60'} >
             <RxAvatar size={25} />
         </Link>
         </main>

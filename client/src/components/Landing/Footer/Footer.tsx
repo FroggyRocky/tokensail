@@ -6,7 +6,7 @@ type Props = {
 };
 
 export function Footer(props: Props) {
-    return <div className={'px-5 pb-5 pt-12'}>
+    return <div className={'px-5 pb-5 pt-12 relative z-10'}>
         <main className={'flex justify-between items-center'}>
             <p>TokenSail. All rights reserved</p>
             <aside>
