@@ -1,9 +1,9 @@
 {
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/account/page": "app/account/page.js",
   "/account/wallet/page": "app/account/wallet/page.js",
-  "/account/bio/page": "app/account/bio/page.js",
+  "/account/gallery/[id]/page": "app/account/gallery/[id]/page.js",
   "/account/nft/page": "app/account/nft/page.js",
   "/account/gallery/page": "app/account/gallery/page.js"
 }

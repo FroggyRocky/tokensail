@@ -48,15 +48,7 @@ export function Home() {
     </div>
 })
 
-useEffect(() => {
-    if(isNftModalOpen) {
-        document.body.style.overflow = 'hidden'
-    }
-    else document.body.style.overflow = 'unset'
-    return () => {
-        document.body.style.overflow = 'unset'
-    }
-}, [isNftModalOpen])
+
 
 function recentGalleries() {
         if(accountData?.nft_folders?.length) {
@@ -129,10 +121,10 @@ const followingCryptosComponents = useMemo(() => {
 }, [followingCryptos])
 
     return <div className={'flex items-center justify-center h-full py-5'}>
-        {isNftModalOpen && <Modal handleClose={() => setIsNftModalOpen(false)} >
-            <NftFolderCreation />
-        </Modal>}
-        <main>
+        <main className={'relative'}>
+            {isNftModalOpen && <Modal handleClose={() => setIsNftModalOpen(false)} >
+                <NftFolderCreation />
+            </Modal>}
             <div className={'grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-5'}>
             <aside className={'px-4 py-5 rounded border border-amber-50 hover:border-amber-50 max-w-lg h-full'}>
                 {!!accountData?.wallet_activity?.length ? <>

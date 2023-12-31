@@ -24,28 +24,23 @@
       "static/css/app/account/page.css",
       "static/chunks/app/account/page.js"
     ],
-    "/account/loading": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/account/loading.css",
-      "static/chunks/app/account/loading.js"
-    ],
     "/account/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/account/layout.css",
       "static/chunks/app/account/layout.js"
     ],
+    "/account/loading": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/account/loading.css",
+      "static/chunks/app/account/loading.js"
+    ],
     "/account/wallet/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/account/wallet/page.css",
       "static/chunks/app/account/wallet/page.js"
-    ],
-    "/account/bio/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/account/bio/page.js"
     ],
     "/account/nft/page": [
       "static/chunks/webpack.js",
@@ -58,6 +53,12 @@
       "static/chunks/main-app.js",
       "static/css/app/account/gallery/page.css",
       "static/chunks/app/account/gallery/page.js"
+    ],
+    "/account/gallery/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/account/gallery/[id]/page.css",
+      "static/chunks/app/account/gallery/[id]/page.js"
     ]
   }
 }
